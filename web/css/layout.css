@@ -1,0 +1,42 @@
+/**********/
+/* GLOBAL */
+/**********/
+body{
+    font-family: "10px sans-serif";
+}
+table{
+    border:           1px solid black;
+    border-collapse:  collapse;
+    width:            100%;
+
+    background-color: transparent;
+}
+th, td {
+    border:          1px solid black;
+    border-collapse: collapse;
+    padding:         15px;
+}
+
+/*********/
+/* LOCAL */
+/*********/
+#PauWare_view_logo {
+    text-align: left;
+    width:      25%;
+}
+
+#PauWare_view_bla_bla {
+    text-align: center;
+    width:      60%;
+}
+
+#PauWare_view_connection_status {
+    text-align: center;
+    width:      25%;
+}
+
+#html_verbose {
+    position: relative;
+    height:   200px;
+    overflow: auto;
+}

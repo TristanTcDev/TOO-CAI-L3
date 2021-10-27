@@ -798,7 +798,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             user_properties.put("Author", "Tristan and Arnaud");
             org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
             server.start(); //Démarrage du serveur WebSocket
-            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("web" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("web" + java.io.File.separatorChar + "main.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
 
             bCMS.FSC_connection_request();
             bCMS.PSC_connection_request();

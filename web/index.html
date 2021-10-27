@@ -1,8 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
     <head>
-        <meta charset="UTF-8" />
-        <title>Test WebSockets</title>
-        <script src="./index.js"></script>
+        <title>PauWare2Web software</title>
+        <meta content="text/html; charset=utf-8" http-equiv="content-type">
+        <meta content="Franck Barbier" name="author">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="shortcut icon" href="./img/favicon.ico"/>
+        <link type='text/css' rel='stylesheet' href="./css/layout.css"/>
+
+        <script type="text/javascript" src="./js/snap.svg-min.js"></script>
+        <script type='text/javascript' src="./js/PauWare2Web.js"></script>
     </head>
+
+    <body>
+        <!-- Header -->
+        <table class="PauWare_view_header_table" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><img src="./img/PauWare.png"/></td>
+                <td align="center"><b>PauWare2Web</b> software is a Web simulator for <a target="_blank" href="http://pauware.com">PauWare2</a>.
+                    This software is provided &ldquo;as is&rdquo; without any particular license. It is based on the Java 11 (or later) <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html">HTTP Client and WebSocket APIs</a>.
+                </td>
+                <td><img id="pause" src="./img/media-playback-pause-4.png"/></td>
+            </tr>
+        </table>
+
+        <!-- Sliders -->
+        <div align="center">
+            <!-- FREQUENCY -->
+            <input id="FREQUENCY_SLIDER" type="range" min="0.5" max="5.0" step="0.5" value="3.0">
+            <output id="FREQUENCY">3 sec.</output>
+            <!-- ZOOM -->
+            <input id="ZOOM_SLIDER" type="range" min="5" max="100" step="5" value="100">
+            <output id="ZOOM">100%</output>
+        </div>
+
+        <!--SVG section here:-->
+        <!--PauWare2Web-->
+
+        <div id="html_verbose"></div>
+
+        <!-- Copyrights -->
+        <h5>Dependencies</h5>
+        <ul>
+            <li><a target="_blank" href="https://mvnrepository.com/artifact/javax.json/javax.json-api">Java API for Processing JSON</a> software is linked to <em>PauWare2Web</em> as a runtime library.
+            </li>
+            <li><a target="_blank" href="https://plantuml.com/">PlantUML</a> Java software is linked to <em>PauWare2Web</em> as a runtime library.
+                <ul>
+                    <li><a target="_blank" href="http://graphviz.org/">Graphviz</a> software (required by <em>PlantUML</em>) is <i>a priori</i> installed on <em>Windows</em>.
+                    </li>
+                    <li><a target="_blank" href="http://graphviz.org/">Graphviz</a> software on <em>macOS</em> may be installed using <em>Homebrew</em>
+                        (see also <a target="_blank" href="https://graphviz.org/download/#mac">here</a>&hellip;).
+                    </li>
+                </ul>
+            </li>
+            <li><a target="_blank" href="https://eclipse-ee4j.github.io/tyrus/">Tyrus</a> Java software is linked to <em>PauWare2Web</em> as a runtime library.
+            </li>
+        </ul>
+    </body>
 </html>

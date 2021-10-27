@@ -10,7 +10,7 @@
     
     <properties>
         <!-- Target Java 9: -->
-        <maven.compiler.release>9</maven.compiler.release>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     

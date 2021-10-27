@@ -781,6 +781,17 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) {
             System.out.println("Message de JavaScript: " + message);
+            /*if(message.equals("policier")){
+                System.out.println("Appeller fonction policier");
+                BCMS bCMS = new BCMS();
+                
+            }*/
+            switch(message){
+                case "policier": 
+                    System.out.println("Policier");
+                case "pompier":
+                    System.out.println("Pompier");
+            }
         }
         @javax.websocket.OnOpen
         public void onOpen(javax.websocket.Session session, javax.websocket.EndpointConfig ec) throws java.io.IOException {
@@ -788,6 +799,8 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             session.getBasicRemote().sendText("Handshaking: \"Yes\", Connecté avec succès à Java");
         }
     }
+    
+    
  
     public static void main(String args[]) {
         

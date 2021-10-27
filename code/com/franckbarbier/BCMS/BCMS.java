@@ -777,16 +777,9 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             java.util.Map<String, Object> user_properties = new java.util.TreeMap<>(); // Dictionnaire contenant les paramètres utilisateurs (ne fonctionne pas, a besoin d'investigations...)
             user_properties.put("Author", "Tristan and Arnaud");
             org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, WebSocket.My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
-            try {
-                server.start(); //Démarrage du serveur WebSocket
-                java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("web" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
-                System.out.println("\n*** Please press any key to stop the server... ***\n");
-                System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                server.stop(); // Arret du serveur
-            }
+            server.start(); //Démarrage du serveur WebSocket
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("web" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
+
             bCMS.FSC_connection_request();
             bCMS.PSC_connection_request();
             bCMS.state_fire_truck_number(2);
@@ -845,6 +838,11 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             }
             bCMS.close();
             bCMS.stop();
+            
+            System.out.println("\n*** Please press any key to stop the server... ***\n");
+            System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
+
+            server.stop();
 
 //            bCMS = new BCMS();
 //            bCMS.start();

@@ -779,18 +779,18 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             System.out.println("onError: " + throwable.getMessage());
         }
         @javax.websocket.OnMessage
-        public void onMessage(javax.websocket.Session session, String message) {
+        public void onMessage(javax.websocket.Session session, String message) throws Exception {
             System.out.println("Message de JavaScript: " + message);
-            /*if(message.equals("policier")){
-                System.out.println("Appeller fonction policier");
-                BCMS bCMS = new BCMS();
-                
-            }*/
+            BCMS bCMS = null;
             switch(message){
                 case "policier": 
                     System.out.println("Policier");
+                    bCMS = new BCMS();
+                    bCMS.start();
+                    break;
                 case "pompier":
                     System.out.println("Pompier");
+                    break;
             }
         }
         @javax.websocket.OnOpen
@@ -812,7 +812,8 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
             server.start(); //Démarrage du serveur WebSocket
             java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("web" + java.io.File.separatorChar + "main.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
-
+            //Serveur de ws et BCMS dans classe differente
+            //Je prends le message et j'appele la bonne fonction
             bCMS.FSC_connection_request();
             bCMS.PSC_connection_request();
             bCMS.state_fire_truck_number(2);

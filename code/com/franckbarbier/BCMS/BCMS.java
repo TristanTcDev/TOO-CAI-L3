@@ -779,7 +779,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             System.out.println("onError: " + throwable.getMessage());
         }
         @javax.websocket.OnMessage
-        public void onMessage(javax.websocket.Session session, String message) throws Exception {
+        public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception{
             System.out.println("Message de JavaScript: " + message);
             BCMS bCMS = null;
             switch(message){

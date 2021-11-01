@@ -105,26 +105,6 @@
                             <overWriteReleases>true</overWriteReleases>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>get-resources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.pauware</groupId>
-                                    <artifactId>PauWare2Web</artifactId>
-                                    <version>1.0</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                            </artifactItems>
-                            <includes>web/**</includes>
-                            <outputDirectory>${project.basedir}</outputDirectory>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>

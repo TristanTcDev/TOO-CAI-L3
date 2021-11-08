@@ -1,6 +1,7 @@
 package com.franckbarbier.BCMS;
 
 
+
 final class Timeout_log {
 
     java.util.Date _when;
@@ -768,59 +769,17 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
 // Error:
         return -1;
     }
-    @javax.websocket.server.ServerEndpoint(value = "/BCMS")
-    public static class My_ServerEndpoint {
-        static BCMS bCMS = null;
-        static {
-           try{
-               bCMS = new BCMS();
-               bCMS.start();
-           }
-           catch(java.lang.Exception e){
-               e.printStackTrace();
-           }
-        }
-        @javax.websocket.OnClose
-        public void onClose(javax.websocket.Session session, javax.websocket.CloseReason close_reason) {   
-            System.out.println("onClose: " + close_reason.getReasonPhrase());
-        }
-        @javax.websocket.OnError
-        public void onError(javax.websocket.Session session, Throwable throwable) {
-            System.out.println("onError: " + throwable.getMessage());
-        }
-        @javax.websocket.OnMessage
-        public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception{
-            System.out.println("Message de JavaScript: " + message);
-            switch(message){
-                case "policier": 
-                    System.out.println("Policier");
-                    bCMS.FSC_connection_request();
-                    break;
-                case "pompier":
-                    System.out.println("Pompier");
-                    break;
-            }
-        }
-        @javax.websocket.OnOpen
-        public void onOpen(javax.websocket.Session session, javax.websocket.EndpointConfig ec) throws java.io.IOException, java.lang.Exception {
-            System.out.println("OnOpen... " + ec.getUserProperties().get("Author"));
-            session.getBasicRemote().sendText("Handshaking: \"Yes\", Connecté avec succès à Java");
-        }
-    }
-    
-    
  
     public static void main(String args[]) {
         
         try {
             java.util.Map<String, Object> user_properties = new java.util.TreeMap<>(); // Dictionnaire contenant les paramètres utilisateurs (ne fonctionne pas, a besoin d'investigations...)
             user_properties.put("Author", "Tristan and Arnaud");
-            org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
+            org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, WebSocket_Server.My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
             server.start(); //Démarrage du serveur WebSocket
             java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
             //Serveur de ws et BCMS dans classe differente
             //Je prends le message et j'appele la bonne fonction
-            
             BCMS bCMS = new BCMS();
             bCMS.start();
             bCMS.FSC_connection_request();

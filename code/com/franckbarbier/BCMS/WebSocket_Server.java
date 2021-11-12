@@ -63,6 +63,14 @@ public class WebSocket_Server {
                         //System.out.println("taille de l'array: " + _bCMS.get_fire_trucks().size());
                     }
                     break;
+                case "idlePompier":
+                    System.out.println("idlePompier");
+                    _bCMS.set_number_of_fire_truck_required(10);
+                    _bCMS.state_fire_truck_number(12);
+                    for (String s : _bCMS.get_fire_trucks()) {
+                        System.out.println("Idle: " + s);
+                    }
+                    break;
             }
         }
         @javax.websocket.OnOpen

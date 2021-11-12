@@ -5,6 +5,7 @@
  */
 package com.franckbarbier.BCMS;
 
+
 /**
  *
  * @author arnaud
@@ -12,11 +13,12 @@ package com.franckbarbier.BCMS;
 public class WebSocket_Server {
     @javax.websocket.server.ServerEndpoint(value = "/BCMS")
     public static class My_ServerEndpoint {
-        static BCMS bCMS = null;
+        private static java.util.Map<String, String> _sessions = new java.util.HashMap<>();
+        private static BCMS _bCMS = null;
         static {
            try{
-               bCMS = new BCMS();
-               bCMS.start();
+               _bCMS = new BCMS();
+               _bCMS.start();
            }
            catch(java.lang.Exception e){
                e.printStackTrace();
@@ -33,12 +35,17 @@ public class WebSocket_Server {
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception{
             System.out.println("Message de JavaScript: " + message);
+            //java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
+            //System.out.println("Sessions ouvertes: " + sessions.size());
             switch(message){
                 case "policier": 
                     System.out.println("Policier");
-                    bCMS.FSC_connection_request();
+                    _sessions.put("Policier", session.getId());
+                    
+                    _bCMS.FSC_connection_request();
                     break;
                 case "pompier":
+                    _sessions.put("Pompier", session.getId());
                     System.out.println("Pompier");
                     break;
             }

@@ -779,7 +779,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             server.start(); //Démarrage du serveur WebSocket
             java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
             //Serveur de ws et BCMS dans classe differente
-            //Je prends le message et j'appele la bonne fonction
+            //Je prends le message et j'appelle la bonne fonction
             BCMS bCMS = new BCMS();
             bCMS.start();
             bCMS.FSC_connection_request();

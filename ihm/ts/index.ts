@@ -2,17 +2,19 @@ const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté
 
 declare const Swal:any;
 window.addEventListener('load', Main);
-
+window.onload=function(){
+    document.getElementById("idlePomp").style.display="none";
+}
 
 function Main(){
     ws.onmessage = function(e) {
         console.log("Bonjour, voici un message de Java: " + e.data); //On réceptionne le message du serveur (e.data)
-        if(e.data.toString()==="already_exist"){
+        if(e.data.toString()==="already_exist") {
             Swal.fire({
                 icon: 'error',
                 title: 'Alerte',
                 text: 'Un policier est deja connecté pour cette crise!',
-            })
+            }).then((e) => {ws.close();})
         }
     };
     ws.onopen = function() {
@@ -33,12 +35,21 @@ function btnPolicier(){
     ws.send("policier");
 }
 
+
+
 function btnPompier(){
     console.log("Je suis un pompier");
     document.getElementById("Policier").remove();
     let myButton = document.getElementById("Pompier");
     myButton.style.position = "absolute";
     myButton.style.left = "50%";
-    myButton.style.transform = "translateX(-50%)";
+    //document.getElementById("myDIV").innerHTML = "How are you?";
+    document.getElementById("idlePomp").style.display = "block";
+    document.getElementById("Pompier").style.left="40%";
     ws.send("pompier");
+}
+
+function idlePompier() {
+    console.log("le test a fonctionner LET'S GOOOOOOOOOO");
+    ws.send("idlePompier");
 }

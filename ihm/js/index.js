@@ -20,10 +20,20 @@ function Main() {
 }
 function btnPolicier() {
     console.log("Je suis un policier");
+    document.getElementById("Pompier").remove();
+    let myButton = document.getElementById("Policier");
+    myButton.style.position = "absolute";
+    myButton.style.left = "50%";
+    myButton.style.transform = "translateX(-50%)";
     ws.send("policier");
 }
 function btnPompier() {
     console.log("Je suis un pompier");
+    document.getElementById("Policier").remove();
+    let myButton = document.getElementById("Pompier");
+    myButton.style.position = "absolute";
+    myButton.style.left = "50%";
+    myButton.style.transform = "translateX(-50%)";
     ws.send("pompier");
 }
 //# sourceMappingURL=index.js.map

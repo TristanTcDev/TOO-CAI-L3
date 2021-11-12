@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package com.franckbarbier.BCMS;
-
-
 /**
  *
  * @author arnaud
@@ -40,13 +38,25 @@ public class WebSocket_Server {
             switch(message){
                 case "policier": 
                     System.out.println("Policier");
-                    _sessions.put("Policier", session.getId());
-                    
-                    _bCMS.FSC_connection_request();
+                    if(_sessions.containsKey("Policier")){
+                        session.getBasicRemote().sendText("already_exist");
+                    }
+                    else{
+                        _sessions.put("Policier", session.getId());
+                        _bCMS.FSC_connection_request();
+                    }
+
                     break;
                 case "pompier":
-                    _sessions.put("Pompier", session.getId());
                     System.out.println("Pompier");
+                    if(_sessions.containsKey("Pompier")){
+                        session.getBasicRemote().sendText("already_exist");
+                    }
+                    else{
+                        _sessions.put("Pompier", session.getId());
+                        _bCMS.PSC_connection_request();
+                    }
+                    
                     break;
             }
         }

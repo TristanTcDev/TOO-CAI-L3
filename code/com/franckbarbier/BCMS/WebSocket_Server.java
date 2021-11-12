@@ -60,7 +60,7 @@ public class WebSocket_Server {
                         /*for (String s : _bCMS.get_fire_trucks()) {
                             System.out.println("Idle: " + s);
                         }*/
-                        System.out.println("taille de l'array: " + _bCMS.get_fire_trucks().size());
+                        //System.out.println("taille de l'array: " + _bCMS.get_fire_trucks().size());
                     }
                     break;
             }

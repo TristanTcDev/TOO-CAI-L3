@@ -780,6 +780,12 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "index.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
             //Serveur de ws et BCMS dans classe differente
             //Je prends le message et j'appelle la bonne fonction
+            
+            System.out.println("\n*** Please press any key to stop the server... ***\n");
+            System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
+
+            server.stop();
+            
             BCMS bCMS = new BCMS();
             bCMS.start();
             bCMS.FSC_connection_request();
@@ -840,11 +846,6 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             }
             bCMS.close();
             bCMS.stop();
-            
-            System.out.println("\n*** Please press any key to stop the server... ***\n");
-            System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
-
-            server.stop();
 
 //            bCMS = new BCMS();
 //            bCMS.start();

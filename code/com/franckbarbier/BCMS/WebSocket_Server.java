@@ -43,7 +43,7 @@ public class WebSocket_Server {
                     }
                     else{
                         _sessions.put("Policier", session.getId());
-                        _bCMS.FSC_connection_request();
+                        _bCMS.PSC_connection_request();
                     }
 
                     break;
@@ -54,9 +54,14 @@ public class WebSocket_Server {
                     }
                     else{
                         _sessions.put("Pompier", session.getId());
-                        _bCMS.PSC_connection_request();
+                        _bCMS.FSC_connection_request();
+                        _bCMS.set_number_of_fire_truck_required(10);
+                        _bCMS.state_fire_truck_number(10);
+                        /*for (String s : _bCMS.get_fire_trucks()) {
+                            System.out.println("Idle: " + s);
+                        }*/
+                        System.out.println("taille de l'array: " + _bCMS.get_fire_trucks().size());
                     }
-                    
                     break;
             }
         }

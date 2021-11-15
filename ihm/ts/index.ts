@@ -9,16 +9,18 @@ window.onload=function(){
 function Main(){
     ws.onmessage = function(e) {
         console.log("Bonjour, voici un message de Java: " + e.data); //On réceptionne le message du serveur (e.data)
-        if(e.data.toString()==="already_exist") {
+        let data: string = e.data.toString();
+        let dataObject = JSON.parse(data);
+        if(dataObject.error==="already_exist") {
             Swal.fire({
                 icon: 'error',
                 title: 'Alerte',
-                text: 'Un policier est deja connecté pour cette crise!',
+                text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => {ws.close();})
         }
     };
     ws.onopen = function() {
-        ws.send("Bonjour Java"); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
+        ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
     };
     ws.onclose = function(e){
         console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
@@ -32,7 +34,9 @@ function btnPolicier(){
     myButton.style.position = "absolute";
     myButton.style.left = "50%";
     myButton.style.transform = "translateX(-50%)";
-    ws.send("policier");
+    ws.send(JSON.stringify({
+        id: "policier",
+    }));
 }
 
 
@@ -46,7 +50,9 @@ function btnPompier(){
     //document.getElementById("myDIV").innerHTML = "How are you?";
     document.getElementById("idlePomp").style.display = "block";
     document.getElementById("Pompier").style.left="40%";
-    ws.send("pompier");
+    ws.send(JSON.stringify({
+        id: "pompier",
+    }));
 }
 
 function idlePompier() {

@@ -786,7 +786,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
 
             server.stop();
             
-            BCMS bCMS = new BCMS();
+            /*BCMS bCMS = new BCMS();
             bCMS.start();
             bCMS.FSC_connection_request();
             bCMS.PSC_connection_request();
@@ -845,7 +845,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
                 System.out.println(Status.Arrived + ": " + s);
             }
             bCMS.close();
-            bCMS.stop();
+            bCMS.stop();*/
 
 //            bCMS = new BCMS();
 //            bCMS.start();

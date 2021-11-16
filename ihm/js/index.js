@@ -15,7 +15,7 @@ function Main() {
                 icon: 'error',
                 title: 'Alerte',
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
-            }).then((e) => { ws.close(); });
+            }).then((e) => { ws.close(); }).then(() => { window.close(); });
         }
     };
     ws.onopen = function () {
@@ -43,14 +43,31 @@ function btnPompier() {
     myButton.style.position = "absolute";
     myButton.style.left = "50%";
     //document.getElementById("myDIV").innerHTML = "How are you?";
-    document.getElementById("idlePomp").style.display = "block";
     document.getElementById("pompier").style.left = "40%";
+    document.getElementById("idlePomp").style.display = "block";
     ws.send(JSON.stringify({
         id: "pompier",
     }));
 }
 function idlePompier() {
     console.log("le test a fonctionner LET'S GOOOOOOOOOO");
-    ws.send("idlePompier");
+    Swal.fire({
+        title: 'Choisissez le nombre de vehicules',
+        icon: 'question',
+        input: 'range',
+        inputLabel: 'Nombre de camions',
+        inputAttributes: {
+            min: 1,
+            max: 10,
+            step: 1
+        },
+        inputValue: 1
+    }).then((nbCamions) => {
+        console.log(nbCamions.value);
+        ws.send(JSON.stringify({
+            function: "state_truck",
+            data: nbCamions.value
+        }));
+    });
 }
 //# sourceMappingURL=index.js.map

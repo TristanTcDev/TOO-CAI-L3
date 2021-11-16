@@ -33,7 +33,7 @@ public class WebSocket_Server {
 
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception {
-            //System.out.println("Message de JavaScript: " + message);
+            System.out.println("Message de JavaScript: " + message);
             javax.json.JsonReader jsonReader = javax.json.Json.createReader(new java.io.StringReader(message));
             javax.json.stream.JsonParserFactory factory = javax.json.Json.createParserFactory(null);
             javax.json.stream.JsonParser parser = factory.createParser(jsonReader.readObject());
@@ -62,8 +62,8 @@ public class WebSocket_Server {
                                     } else {
                                         _sessions.put("Pompier", session.getId());
                                         _bCMS.FSC_connection_request();
-                                        _bCMS.set_number_of_fire_truck_required(10);
-                                        _bCMS.state_fire_truck_number(10);
+                                        //_bCMS.set_number_of_fire_truck_required(10);
+                                        //_bCMS.state_fire_truck_number(10);
                                     }
                                     break;
                             }

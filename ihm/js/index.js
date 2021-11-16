@@ -9,6 +9,8 @@ function Main() {
         let data = e.data.toString();
         let dataObject = JSON.parse(data);
         if (dataObject.error === "already_exist") {
+            console.log("plus de place disponible ");
+            document.getElementsByClassName("idlePomp")[0].remove();
             Swal.fire({
                 icon: 'error',
                 title: 'Alerte',
@@ -25,8 +27,8 @@ function Main() {
 }
 function btnPolicier() {
     console.log("Je suis un policier");
-    document.getElementById("Pompier").remove();
-    let myButton = document.getElementById("Policier");
+    document.getElementById("pompier").remove();
+    let myButton = document.getElementById("policier");
     myButton.style.position = "absolute";
     myButton.style.left = "50%";
     myButton.style.transform = "translateX(-50%)";
@@ -36,13 +38,13 @@ function btnPolicier() {
 }
 function btnPompier() {
     console.log("Je suis un pompier");
-    document.getElementById("Policier").remove();
-    let myButton = document.getElementById("Pompier");
+    document.getElementById("policier").remove();
+    let myButton = document.getElementById("pompier");
     myButton.style.position = "absolute";
     myButton.style.left = "50%";
     //document.getElementById("myDIV").innerHTML = "How are you?";
     document.getElementById("idlePomp").style.display = "block";
-    document.getElementById("Pompier").style.left = "40%";
+    document.getElementById("pompier").style.left = "40%";
     ws.send(JSON.stringify({
         id: "pompier",
     }));

@@ -13,14 +13,12 @@ function Main(){
         let dataObject = JSON.parse(data);
         if(dataObject.error==="already_exist") {
             console.log("plus de place disponible ");
+            document.getElementsByClassName("idlePomp")[0].remove();
             Swal.fire({
                 icon: 'error',
                 title: 'Alerte',
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => {ws.close();})
-        }
-        if (e === "pompier") {
-
         }
     };
     ws.onopen = function() {

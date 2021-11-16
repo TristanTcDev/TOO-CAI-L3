@@ -1,7 +1,7 @@
 body {
     background-image: url("../img/wallpaper.jpg")
 }
-.Policier {
+.policier {
     align-items: center;
     color: white;
     font-weight: bold;
@@ -21,7 +21,7 @@ body {
     padding: 3px;
     cursor: pointer;
 }
-.Pompier {
+.pompier {
     align-items: center;
     color: white;
     font-weight: bold;

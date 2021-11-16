@@ -11,7 +11,7 @@ package com.franckbarbier.BCMS;
 public class WebSocket_Server {
     @javax.websocket.server.ServerEndpoint(value = "/BCMS")
     public static class My_ServerEndpoint {
-        private static java.util.Map<String, String> _sessions = new java.util.HashMap<>();
+        private static java.util.Map<String, String> _sessions = new java.util.HashMap<>(); // Key: Policier or Pompier, Value: sessionId
         private static BCMS _bCMS = null;
         static {
             try {
@@ -68,6 +68,17 @@ public class WebSocket_Server {
                                     break;
                             }
                             break;
+                        }
+                    }
+                }
+                if (event == javax.json.stream.JsonParser.Event.KEY_NAME && parser.getString().equals("function")){
+                    while (parser.hasNext()) {
+                        event = parser.next();
+                        if(event == javax.json.stream.JsonParser.Event.VALUE_STRING){
+                            switch (parser.getString()){
+                                case "state_truck":
+                                    System.out.println("State_truck called...");
+                            }
                         }
                     }
                 }

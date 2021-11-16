@@ -161,7 +161,7 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
 
     protected com.pauware.pauware_engine.Core.AbstractState _Completion_of_objectives;
     protected com.pauware.pauware_engine.Core.AbstractState _End_of_crisis;
-    protected com.pauware.pauware_engine.Core.AbstractStateMachine _BCMS_state_machine;
+    protected com.pauware.pauware_engine.Core.AbstractStateMachine _BCMS_state_machine; //On peut utiliser 
 
     private void init_structure() throws com.pauware.pauware_engine.Exceptions.State_exception {
         _timeout_log = new java.util.LinkedList<>();
@@ -781,6 +781,8 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             //Serveur de ws et BCMS dans classe differente
             //Je prends le message et j'appelle la bonne fonction
             
+            
+            //On peut utiliser la méthode .current_state(); pour checker l'etat de la crise
             System.out.println("\n*** Please press any key to stop the server... ***\n");
             System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
 

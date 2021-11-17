@@ -61,8 +61,6 @@ public class WebSocket_Server {
                         } else {
                             _sessions.put("Pompier", session.getId());
                             _bCMS.FSC_connection_request();
-                            //_bCMS.set_number_of_fire_truck_required(10);
-                            //_bCMS.state_fire_truck_number(10);
                         }
                         break;
                 }
@@ -70,11 +68,13 @@ public class WebSocket_Server {
             if (objarr.containsKey("function")) {
                 switch (objarr.getString("function")) {
                     case "state_truck":
-                        //System.out.println("State_truck called...");
-                        //System.out.println(Integer.parseInt(objarr.getString("data")));
                         _bCMS.set_number_of_fire_truck_required(Integer.parseInt(objarr.getString("data")));
                         _bCMS.state_fire_truck_number(Integer.parseInt(objarr.getString("data")));
-                        
+                        break;
+                    case "state_car":
+                        _bCMS.set_number_of_police_vehicle_required(Integer.parseInt(objarr.getString("data")));
+                        _bCMS.state_police_vehicle_number(Integer.parseInt(objarr.getString("data")));
+                        break;
                 }
             }
             jsonReader.close();

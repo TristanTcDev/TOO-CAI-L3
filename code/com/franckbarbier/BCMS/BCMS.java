@@ -777,8 +777,8 @@ public class BCMS extends com.pauware.pauware_engine.Core.AbstractTimer_monitor 
             user_properties.put("Author", "Tristan and Arnaud");
             org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/achaubet", user_properties, WebSocket_Server.My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
             server.start(); //Démarrage du serveur WebSocket
-            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "pompier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
-            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "policier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "pompier" + java.io.File.separatorChar + "pompier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "policier" + java.io.File.separatorChar + "policier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
             //Serveur de ws et BCMS dans classe differente
             //Je prends le message et j'appelle la bonne fonction
             

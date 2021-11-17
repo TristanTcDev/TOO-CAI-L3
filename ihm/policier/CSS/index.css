@@ -1,0 +1,82 @@
+body {
+    background-image: url("../img/wallpaper.jpg")
+}
+.policier {
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    top:20%;
+    left:43.2%;
+    width:14%;
+    height:10%;
+    position: absolute;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%);
+    border: 1;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    font-family: Phantomsans, sans-serif;
+    font-size: 22px;
+    justify-content: center;
+    padding: 3px;
+    cursor: pointer;
+}
+
+#idlePoli {
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    top:40%;
+    left:28%;
+    width:12%;
+    height:5%;
+    position: absolute;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%);
+    border: 1;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    font-family: Phantomsans, sans-serif;
+    font-size: 15px;
+    justify-content: center;
+    padding: 3px;
+    cursor: pointer;
+}
+
+#routePoli {
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    top:40%;
+    left:60%;
+    width:12%;
+    height:5%;
+    position: absolute;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%);
+    border: 1;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    font-family: Phantomsans, sans-serif;
+    font-size: 15px;
+    justify-content: center;
+    padding: 3px;
+    cursor: pointer;
+}
+
+#CriseBCMS
+{
+    align-items: center;
+    color: black;
+    font-weight: bold;
+    top:80%;
+    left:42%;
+    width:13%;
+    height:5%;
+    position: absolute;
+    background-color: #9a0000;
+    margin: 10px 20px auto;
+    padding: 10px 10px 30px;
+    justify-content: center;
+    text-align: center;
+}

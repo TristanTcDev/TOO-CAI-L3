@@ -4,15 +4,19 @@
  * and open the template in the editor.
  */
 package com.franckbarbier.BCMS;
+
 /**
  *
  * @author arnaud
  */
 public class WebSocket_Server {
+
     @javax.websocket.server.ServerEndpoint(value = "/BCMS")
     public static class My_ServerEndpoint {
+
         private static java.util.Map<String, String> _sessions = new java.util.HashMap<>(); // Key: Policier or Pompier, Value: sessionId
         private static BCMS _bCMS = null;
+
         static {
             try {
                 _bCMS = new BCMS();
@@ -21,6 +25,7 @@ public class WebSocket_Server {
                 e.printStackTrace();
             }
         }
+
         @javax.websocket.OnClose
         public void onClose(javax.websocket.Session session, javax.websocket.CloseReason close_reason) {
             System.out.println("onClose: " + close_reason.getReasonPhrase());
@@ -33,69 +38,49 @@ public class WebSocket_Server {
 
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception {
-            System.out.println("Message de JavaScript: " + message);
             javax.json.JsonReader jsonReader = javax.json.Json.createReader(new java.io.StringReader(message));
-            javax.json.stream.JsonParserFactory factory = javax.json.Json.createParserFactory(null);
-            javax.json.stream.JsonParser parser = factory.createParser(jsonReader.readObject());
-            while (parser.hasNext()) {
-                javax.json.stream.JsonParser.Event event = parser.next();
-                if (event == javax.json.stream.JsonParser.Event.KEY_NAME && parser.getString().equals("id")) {
-                    while (parser.hasNext()) {
-                        event = parser.next();
-                        if (event == javax.json.stream.JsonParser.Event.VALUE_STRING) {
-                            switch (parser.getString()) {
-                                case "policier":
-                                    System.out.println("Policier");
-                                    if (_sessions.containsKey("Policier")) {
-                                        javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "already_exist").add("id", "policier").build();
-                                        session.getBasicRemote().sendObject(error);
-                                    } else {
-                                        _sessions.put("Policier", session.getId());
-                                        _bCMS.PSC_connection_request();
-                                    }
-                                    break;
-                                case "pompier":
-                                    System.out.println("Pompier");
-                                    if (_sessions.containsKey("Pompier")) {
-                                        javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "already_exist").add("id", "pompier").build();
-                                        session.getBasicRemote().sendObject(error);
-                                    } else {
-                                        _sessions.put("Pompier", session.getId());
-                                        _bCMS.FSC_connection_request();
-                                        //_bCMS.set_number_of_fire_truck_required(10);
-                                        //_bCMS.state_fire_truck_number(10);
-                                    }
-                                    break;
-                            }
-                            break;
+            System.out.println("Message de JavaScript: " + message);
+            javax.json.JsonObject objarr = jsonReader.readObject();
+            if (objarr.containsKey("id")) {
+                switch (objarr.getString("id")) {
+                    case "policier":
+                        System.out.println("Policier");
+                        if (_sessions.containsKey("Policier")) {
+                            javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "already_exist").add("id", "policier").build();
+                            session.getBasicRemote().sendObject(error);
+                        } else {
+                            _sessions.put("Policier", session.getId());
+                            _bCMS.PSC_connection_request();
                         }
-                    }
-                }
-                if (event == javax.json.stream.JsonParser.Event.KEY_NAME && parser.getString().equals("function")){
-                    while (parser.hasNext()) {
-                        event = parser.next();
-                        if(event == javax.json.stream.JsonParser.Event.VALUE_STRING){
-                            switch (parser.getString()){
-                                case "state_truck":
-                                    System.out.println("State_truck called...");
-                            }
+                        break;
+                    case "pompier":
+                        System.out.println("Pompier");
+                        if (_sessions.containsKey("Pompier")) {
+                            javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "already_exist").add("id", "pompier").build();
+                            session.getBasicRemote().sendObject(error);
+                        } else {
+                            _sessions.put("Pompier", session.getId());
+                            _bCMS.FSC_connection_request();
+                            //_bCMS.set_number_of_fire_truck_required(10);
+                            //_bCMS.state_fire_truck_number(10);
                         }
-                    }
+                        break;
                 }
             }
-            parser.close();
+            if (objarr.containsKey("function")) {
+                switch (objarr.getString("function")) {
+                    case "state_truck":
+                        //System.out.println("State_truck called...");
+                        //System.out.println(Integer.parseInt(objarr.getString("data")));
+                        _bCMS.set_number_of_fire_truck_required(Integer.parseInt(objarr.getString("data")));
+                        _bCMS.state_fire_truck_number(Integer.parseInt(objarr.getString("data")));
+                        
+                }
+            }
+            jsonReader.close();
+            //System.out.println(_bCMS._BCMS_state_machine.current_state());
             //java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
             //System.out.println("Sessions ouvertes: " + sessions.size());
-            switch (message) {
-                case "idlePompier":
-                    System.out.println("idlePompier");
-                    _bCMS.set_number_of_fire_truck_required(10);
-                    _bCMS.state_fire_truck_number(12);
-                    for (String s : _bCMS.get_fire_trucks()) {
-                        System.out.println("Idle: " + s);
-                    }
-                    break;
-            }
         }
 
         @javax.websocket.OnOpen

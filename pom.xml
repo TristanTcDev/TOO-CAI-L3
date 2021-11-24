@@ -94,7 +94,7 @@
                             <!--Main-Class: com.franckbarbier.BCMS.BCMS-->
                             <!-- 'PauWare2-1.0.jar' and others are added to the class path: -->
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.franckbarbier.BCMS.BCMS</mainClass>
+                            <mainClass>com.franckbarbier.BCMS.WebSocket_Server</mainClass>
                         </manifest>
                     </archive>
                     <outputDirectory>${project.basedir}/web</outputDirectory>

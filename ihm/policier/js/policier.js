@@ -1,4 +1,9 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
+let crisis_started = false;
+/*Swal.setDefaults({
+    allowOutsideClick: false,
+    allowEscapeKey: false
+})*/
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePoli").style.display = "none";
@@ -15,8 +20,13 @@ function Main() {
             Swal.fire({
                 icon: 'error',
                 title: 'Alerte',
+                allowOutsideClick: 'false',
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => { ws.close(); }).then(() => { window.close(); });
+        }
+        if (dataObject.state === "crisis_started") {
+            crisis_started = true;
+            Swal.close();
         }
     };
     ws.onopen = function () {
@@ -28,6 +38,16 @@ function Main() {
 }
 function btnPolicier() {
     console.log("Je suis un policier");
+    ws.send(JSON.stringify({
+        id: "policier",
+    }));
+    Swal.fire({
+        title: 'En attente',
+        html: 'Attente de la connexion du pompier',
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
     let myButton = document.getElementById("policier");
     myButton.disabled = true;
     myButton.style.cursor = "not-allowed";
@@ -35,9 +55,6 @@ function btnPolicier() {
     myButton.textContent = "Policier";
     document.getElementById("idlePoli").style.display = "block";
     document.getElementById("routePoli").style.display = "block";
-    ws.send(JSON.stringify({
-        id: "policier",
-    }));
 }
 function idlePolicier() {
     console.log("idle Policier fonctionne");

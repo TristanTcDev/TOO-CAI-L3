@@ -1,6 +1,9 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
+let crisis_started: boolean = false;
 
 declare const Swal:any;
+
+
 window.addEventListener('load', Main);
 window.onload=function(){
     document.getElementById("idlePomp").style.display="none";
@@ -23,6 +26,10 @@ function Main(){
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => {ws.close()}).then(() => {window.close();})
         }
+        if(dataObject.state==="crisis_started"){
+            crisis_started = true;
+            Swal.close();
+        }
     };
     ws.onopen = function() {
         ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
@@ -34,6 +41,15 @@ function Main(){
 
 function btnPompier(){
     console.log("Je suis un pompier");
+    Swal.fire({
+        title: 'En attente',
+        html: 'Attente de la connexion du policier',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading()
+        },
+    })
     let myButton = <HTMLInputElement>document.getElementById("pompier");
     myButton.disabled = true;
     myButton.style.cursor = "not-allowed";
@@ -44,9 +60,10 @@ function btnPompier(){
     document.getElementById("accorderCrisePomp").style.display="block";
     document.getElementById("accorderCrisePolPomp").style.display="block";
     ws.send(JSON.stringify({
-        id: "pompier",
+        id: "pompier_connexion_request",
     }));
 }
+
 
 function idlePompier() {
     console.log("idle pompier fonctionne");

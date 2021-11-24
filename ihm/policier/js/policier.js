@@ -63,6 +63,18 @@ function btnPolicier() {
         ws.send(JSON.stringify({
             function: "police_connexion_request",
         }));
+        Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: 'Connecté à la crise',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
     });
 }
 function idlePolicier() {
@@ -88,10 +100,7 @@ function idlePolicier() {
 }
 function routePolicier() {
     myArrayOfThings.map((o) => { options[o.id] = o.name; });
-    console.log(options);
-    console.log(myArrayOfThings);
     delete options[1];
-    console.log(options);
     Swal.fire({
         title: 'Choisissez la route à prendre',
         input: 'radio',
@@ -114,6 +123,8 @@ function routePolicier() {
         Swal.fire({ html: `Vous avez choisis la route: ${road}` })
     }*/
     console.log("route policier fonctionne");
-    ws.send("routePolicier");
+    ws.send(JSON.stringify({
+        function: "routePolicier",
+    }));
 }
 //# sourceMappingURL=policier.js.map

@@ -69,6 +69,18 @@ function btnPolicier(){
         ws.send(JSON.stringify({
             function: "police_connexion_request",
         }));
+        Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: 'Connecté à la crise',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
     })
 }
 

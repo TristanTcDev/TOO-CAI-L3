@@ -60,11 +60,24 @@ function btnPompier(){
         myButton.textContent = "Pompier";
         document.getElementById("idlePomp").style.display = "block";
         document.getElementById("routePomp").style.display = "block";
-        document.getElementById("accorderCrisePomp").style.display="block";
-        document.getElementById("accorderCrisePolPomp").style.display="block";
+        document.getElementById("accorderCrisePomp").style.display = "block";
+        document.getElementById("accorderCrisePolPomp").style.display = "block";
         ws.send(JSON.stringify({
             function: "pompier_connexion_request",
-        }));})
+        }));
+        Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: 'Connecté à la crise',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+    })
 }
 
 

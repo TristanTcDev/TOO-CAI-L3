@@ -1,9 +1,5 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
 let crisis_started = false;
-/*Swal.setDefaults({
-    allowOutsideClick: false,
-    allowEscapeKey: false
-})*/
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePoli").style.display = "none";
@@ -44,6 +40,8 @@ function btnPolicier() {
     Swal.fire({
         title: 'En attente',
         html: 'Attente de la connexion du pompier',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         didOpen: () => {
             Swal.showLoading();
         },

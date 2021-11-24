@@ -2,10 +2,7 @@ const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté
 let crisis_started: boolean = false;
 
 declare const Swal:any;
-/*Swal.setDefaults({
-    allowOutsideClick: false,
-    allowEscapeKey: false
-})*/
+
 
 window.addEventListener('load', Main);
 window.onload=function(){
@@ -49,6 +46,8 @@ function btnPolicier(){
     Swal.fire({
         title: 'En attente',
         html: 'Attente de la connexion du pompier',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         didOpen: () => {
             Swal.showLoading()
         },

@@ -51,15 +51,18 @@ function btnPolicier(){
         didOpen: () => {
             Swal.showLoading()
         },
+    }).then(() => {
+        let myButton = <HTMLInputElement>document.getElementById("policier");
+        myButton.disabled = true;
+        myButton.style.cursor = "not-allowed";
+        myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
+        myButton.textContent = "Policier";
+        document.getElementById("idlePoli").style.display = "block";
+        document.getElementById("routePoli").style.display = "block";
+        ws.send(JSON.stringify({
+            function: "police_connexion_request",
+        }));
     })
-    let myButton = <HTMLInputElement>document.getElementById("policier");
-    myButton.disabled = true;
-    myButton.style.cursor = "not-allowed";
-    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
-    myButton.textContent = "Policier";
-    document.getElementById("idlePoli").style.display = "block";
-    document.getElementById("routePoli").style.display = "block";
-
 }
 
 function idlePolicier() {

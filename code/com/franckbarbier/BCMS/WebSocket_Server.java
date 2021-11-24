@@ -58,6 +58,12 @@ public class WebSocket_Server {
             }
             if (objarr.containsKey("function")) {
                 switch (objarr.getString("function")) {
+                    case "police_connexion_request":
+                        _bCMS.PSC_connection_request();
+                        break;
+                    case "pompier_connexion_request":
+                        _bCMS.FSC_connection_request();
+                        break;
                     case "state_truck":
                         _bCMS.set_number_of_fire_truck_required(Integer.parseInt(objarr.getString("data")));
                         _bCMS.state_fire_truck_number(Integer.parseInt(objarr.getString("data")));
@@ -89,8 +95,6 @@ public class WebSocket_Server {
             try {
                 _bCMS = new BCMS();
                 _bCMS.start();
-                _bCMS.PSC_connection_request();
-                _bCMS.FSC_connection_request();
             } catch (java.lang.Exception e) {
                 for (javax.websocket.Session usr : sessions) {
                     javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "error_bcms_start").build();

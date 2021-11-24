@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="294b7ecc-c27a-4e9b-9ff1-41432461e352" name="Changes" comment="" />
+    <list default="true" id="294b7ecc-c27a-4e9b-9ff1-41432461e352" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/../derby.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web/BCMS.PauWare2Web-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../web/BCMS.PauWare2Web-1.0.jar" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +21,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="20BFxDbPk9yoyEfxogTKVYUo2NW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -27,8 +39,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="10.19.0" />
-    <property name="javascript.nodejs.core.library.typings.version" value="10.17.60" />
+    <property name="javascript.nodejs.core.library.configured.version" value="16.2.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/policier" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -71,6 +83,15 @@
       <workItem from="1637071228889" duration="6303000" />
       <workItem from="1637138131153" duration="1852000" />
       <workItem from="1637148951967" duration="21000" />
+      <workItem from="1637744475096" duration="35000" />
+      <workItem from="1637744522307" duration="67000" />
+      <workItem from="1637744600278" duration="63000" />
+      <workItem from="1637744664513" duration="57000" />
+      <workItem from="1637744722856" duration="148000" />
+      <workItem from="1637744871933" duration="20000" />
+      <workItem from="1637744901146" duration="36000" />
+      <workItem from="1637744943932" duration="126000" />
+      <workItem from="1637745100517" duration="6000" />
     </task>
     <servers />
   </component>

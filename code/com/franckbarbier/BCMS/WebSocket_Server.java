@@ -29,6 +29,7 @@ public class WebSocket_Server {
 
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception {
+            java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
             javax.json.JsonReader jsonReader = javax.json.Json.createReader(new java.io.StringReader(message));
             System.out.println("Message de JavaScript: " + message);
             javax.json.JsonObject objarr = jsonReader.readObject();
@@ -71,6 +72,17 @@ public class WebSocket_Server {
                     case "state_car":
                         _bCMS.set_number_of_police_vehicle_required(Integer.parseInt(objarr.getString("data")));
                         _bCMS.state_police_vehicle_number(Integer.parseInt(objarr.getString("data")));
+                        break;
+                    case "routePolicier":
+                        System.out.println("Route Policier");
+                        _bCMS.route_for_police_vehicles();
+                        javax.json.JsonObject route = javax.json.Json.createObjectBuilder().add("route", "recup_route_de_lautre_json").add("id", "policier").build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if(usr.getId().equals(_sessions.get("Pompier"))){
+                                usr.getBasicRemote().sendObject(route);
+                            }
+                        }
+                        session.getId().equals("test");
                         break;
                 }
             }

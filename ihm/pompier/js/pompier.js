@@ -1,4 +1,5 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
+let crisis_started = false;
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePomp").style.display = "none";
@@ -20,6 +21,10 @@ function Main() {
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => { ws.close(); }).then(() => { window.close(); });
         }
+        if (dataObject.state === "crisis_started") {
+            crisis_started = true;
+            Swal.close();
+        }
     };
     ws.onopen = function () {
         ws.send(JSON.stringify({ message: "Bonjour Java" })); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
@@ -30,18 +35,31 @@ function Main() {
 }
 function btnPompier() {
     console.log("Je suis un pompier");
-    let myButton = document.getElementById("pompier");
-    myButton.disabled = true;
-    myButton.style.cursor = "not-allowed";
-    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
-    myButton.textContent = "Pompier";
-    document.getElementById("idlePomp").style.display = "block";
-    document.getElementById("routePomp").style.display = "block";
-    document.getElementById("accorderCrisePomp").style.display = "block";
-    document.getElementById("accorderCrisePolPomp").style.display = "block";
     ws.send(JSON.stringify({
         id: "pompier",
     }));
+    Swal.fire({
+        title: 'En attente',
+        html: 'Attente de la connexion du policier',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    }).then(() => {
+        let myButton = document.getElementById("pompier");
+        myButton.disabled = true;
+        myButton.style.cursor = "not-allowed";
+        myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
+        myButton.textContent = "Pompier";
+        document.getElementById("idlePomp").style.display = "block";
+        document.getElementById("routePomp").style.display = "block";
+        document.getElementById("accorderCrisePomp").style.display = "block";
+        document.getElementById("accorderCrisePolPomp").style.display = "block";
+        ws.send(JSON.stringify({
+            function: "pompier_connexion_request",
+        }));
+    });
 }
 function idlePompier() {
     console.log("idle pompier fonctionne");

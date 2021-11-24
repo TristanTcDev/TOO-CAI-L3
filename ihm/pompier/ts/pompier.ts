@@ -41,6 +41,9 @@ function Main(){
 
 function btnPompier(){
     console.log("Je suis un pompier");
+    ws.send(JSON.stringify({
+        id: "pompier",
+    }));
     Swal.fire({
         title: 'En attente',
         html: 'Attente de la connexion du policier',
@@ -49,19 +52,19 @@ function btnPompier(){
         didOpen: () => {
             Swal.showLoading()
         },
-    })
-    let myButton = <HTMLInputElement>document.getElementById("pompier");
-    myButton.disabled = true;
-    myButton.style.cursor = "not-allowed";
-    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
-    myButton.textContent = "Pompier";
-    document.getElementById("idlePomp").style.display = "block";
-    document.getElementById("routePomp").style.display = "block";
-    document.getElementById("accorderCrisePomp").style.display="block";
-    document.getElementById("accorderCrisePolPomp").style.display="block";
-    ws.send(JSON.stringify({
-        id: "pompier_connexion_request",
-    }));
+    }).then(() => {
+        let myButton = <HTMLInputElement>document.getElementById("pompier");
+        myButton.disabled = true;
+        myButton.style.cursor = "not-allowed";
+        myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
+        myButton.textContent = "Pompier";
+        document.getElementById("idlePomp").style.display = "block";
+        document.getElementById("routePomp").style.display = "block";
+        document.getElementById("accorderCrisePomp").style.display="block";
+        document.getElementById("accorderCrisePolPomp").style.display="block";
+        ws.send(JSON.stringify({
+            function: "pompier_connexion_request",
+        }));})
 }
 
 

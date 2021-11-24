@@ -1,5 +1,12 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
 let crisis_started = false;
+let myArrayOfThings = [
+    { id: 1, name: 'Route 1' },
+    { id: 2, name: 'Route 2' },
+    { id: 3, name: 'Route 3' },
+    { id: 4, name: 'Route 4' }
+];
+let options = {};
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePoli").style.display = "none";
@@ -80,14 +87,17 @@ function idlePolicier() {
     });
 }
 function routePolicier() {
+    myArrayOfThings.map((o) => { options[o.id] = o.name; });
+    console.log(options);
+    console.log(myArrayOfThings);
+    delete options[1];
+    console.log(options);
     Swal.fire({
         title: 'Choisissez la route à prendre',
         input: 'radio',
-        inputOptions: {
-            'Route 1': '1',
-            'Route 2': '2',
-            'Route 3': '3'
-        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        inputOptions: options,
         inputValidator: (value) => {
             if (!value) {
                 return 'Choisissez une route.';

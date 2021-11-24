@@ -1,6 +1,12 @@
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
 let crisis_started: boolean = false;
-
+let myArrayOfThings = [
+    {id: 1, name: 'Route 1'},
+    {id: 2, name: 'Route 2'},
+    {id: 3, name: 'Route 3'},
+    {id: 4, name: 'Route 4'}
+];
+let options = {};
 declare const Swal:any;
 
 
@@ -29,6 +35,7 @@ function Main(){
             crisis_started = true;
             Swal.close();
         }
+
     };
     ws.onopen = function() {
         ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
@@ -88,15 +95,14 @@ function idlePolicier() {
 }
 
 function routePolicier() {
-
+        myArrayOfThings.map((o)=> {options[o.id] = o.name});
+        delete options[1];
         Swal.fire({
         title: 'Choisissez la route à prendre',
         input: 'radio',
-        inputOptions: {
-            'Route 1': '1',
-            'Route 2': '2',
-            'Route 3': '3'
-        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        inputOptions: options,
         inputValidator: (value) => {
             if (!value) {
                 return 'Choisissez une route.'
@@ -116,6 +122,7 @@ function routePolicier() {
 
 
     console.log ("route policier fonctionne");
-
-    ws.send("routePolicier");
+    ws.send(JSON.stringify({
+        function: "routePolicier",
+    }));
 }

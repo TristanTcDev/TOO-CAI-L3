@@ -25,6 +25,24 @@ function Main() {
             crisis_started = true;
             Swal.close();
         }
+        if (dataObject.route === "recup_route_de_lautre_json") {
+            Swal.fire({
+                title: 'Les policiers veulent prednre telle route',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Route confirmer',
+                denyButtonText: `Route non confirmer`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Route confirmer!', '', 'success');
+                }
+                else if (result.isDenied) {
+                    Swal.fire('Route non confirmer', '', 'info');
+                }
+            });
+            return 0;
+        }
     };
     ws.onopen = function () {
         ws.send(JSON.stringify({ message: "Bonjour Java" })); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)

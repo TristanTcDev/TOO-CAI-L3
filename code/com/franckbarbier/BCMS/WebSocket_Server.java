@@ -82,7 +82,6 @@ public class WebSocket_Server {
                                 usr.getBasicRemote().sendObject(route);
                             }
                         }
-                        session.getId().equals("test");
                         break;
                 }
             }

@@ -35,9 +35,20 @@ function Main(){
         }
         if(dataObject.status==="disagree_route"){
             console.log(dataObject.route);
-            myArrayOfThings.splice(Number.parseInt(dataObject.route)-1, 1);
-            console.log(myArrayOfThings);
-            routePolicier();
+            //myArrayOfThings.splice((dataObject.route)-1, 1);
+            if ( myArrayOfThings.length > 1) {
+                console.log(myArrayOfThings.length);
+                myArrayOfThings.splice(Number.parseInt(dataObject.route)-1, 1);
+                console.log(myArrayOfThings.length);
+                routePolicier();
+            }
+            else {
+                Swal.fire({
+                    icon: 'important',
+                    title: 'Problème de Route',
+                    text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
+                })
+            }
         }
 
     };

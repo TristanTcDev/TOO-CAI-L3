@@ -25,11 +25,13 @@ function Main() {
             crisis_started = true;
             Swal.close();
         }
-        if (dataObject.route === "recup_route_de_lautre_json") {
+        if (dataObject.status === "valid_route") {
             Swal.fire({
-                title: 'Les policiers veulent prednre telle route',
+                title: 'Les policiers veulent prendre la route ' + dataObject.route,
                 showDenyButton: true,
                 showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
                 confirmButtonText: 'Route confirmer',
                 denyButtonText: `Route non confirmer`,
             }).then((result) => {

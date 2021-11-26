@@ -113,18 +113,11 @@ function routePolicier() {
             }
         }
     }).then((routePoli) => {
-        console.log(routePoli.value);
+        console.log("route policier fonctionne");
         ws.send(JSON.stringify({
-            function: "state_car",
+            function: "routePolicier",
             data: routePoli.value
         }));
     });
-    /*if (road) {
-        Swal.fire({ html: `Vous avez choisis la route: ${road}` })
-    }*/
-    console.log("route policier fonctionne");
-    ws.send(JSON.stringify({
-        function: "routePolicier",
-    }));
 }
 //# sourceMappingURL=policier.js.map

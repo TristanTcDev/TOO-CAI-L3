@@ -76,7 +76,7 @@ public class WebSocket_Server {
                     case "routePolicier":
                         System.out.println("Route Policier");
                         _bCMS.route_for_police_vehicles();
-                        javax.json.JsonObject route = javax.json.Json.createObjectBuilder().add("route", "recup_route_de_lautre_json").add("id", "policier").build();
+                        javax.json.JsonObject route = javax.json.Json.createObjectBuilder().add("status", "valid_route").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {
                             if(usr.getId().equals(_sessions.get("Pompier"))){
                                 usr.getBasicRemote().sendObject(route);

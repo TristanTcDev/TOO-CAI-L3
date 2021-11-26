@@ -5,7 +5,6 @@ let myArrayOfThings = [
     { id: 2, name: 'Route 2' },
     { id: 3, name: 'Route 3' }
 ];
-let options = {};
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePoli").style.display = "none";
@@ -29,6 +28,12 @@ function Main() {
         if (dataObject.state === "crisis_started") {
             crisis_started = true;
             Swal.close();
+        }
+        if (dataObject.status === "disagree_route") {
+            console.log(dataObject.route);
+            myArrayOfThings.splice(Number.parseInt(dataObject.route) - 1, 1);
+            console.log(myArrayOfThings);
+            routePolicier();
         }
     };
     ws.onopen = function () {
@@ -94,6 +99,7 @@ function idlePolicier() {
     });
 }
 function routePolicier() {
+    let options = {};
     myArrayOfThings.map((o) => { options[o.id] = o.name; });
     Swal.fire({
         title: 'Choisissez la route à prendre',

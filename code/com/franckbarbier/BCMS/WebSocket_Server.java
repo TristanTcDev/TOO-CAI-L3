@@ -78,8 +78,17 @@ public class WebSocket_Server {
                         _bCMS.route_for_police_vehicles();
                         javax.json.JsonObject route = javax.json.Json.createObjectBuilder().add("status", "valid_route").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {
-                            if(usr.getId().equals(_sessions.get("Pompier"))){
+                            if (usr.getId().equals(_sessions.get("Pompier"))) {
                                 usr.getBasicRemote().sendObject(route);
+                            }
+                        }
+                        break;
+                    case "disagree_route_policier":                       
+                        _bCMS.FSC_disagrees_about_police_vehicle_route();
+                        javax.json.JsonObject route_disagree = javax.json.Json.createObjectBuilder().add("status", "disagree_route").add("route", objarr.getString("data")).build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
+                                usr.getBasicRemote().sendObject(route_disagree);
                             }
                         }
                         break;

@@ -45,6 +45,10 @@ function Main(){
                     Swal.fire('Route confirmer!', '', 'success')
                 } else if (result.isDenied) {
                     Swal.fire('Route non confirmer', '', 'error')
+                    ws.send(JSON.stringify({
+                        function: "disagree_route_policier",
+                        data: dataObject.route
+                    }));
                 }
             })
             return 0;

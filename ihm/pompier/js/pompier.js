@@ -40,7 +40,7 @@ function Main() {
                     Swal.fire('Route confirmer!', '', 'success');
                 }
                 else if (result.isDenied) {
-                    Swal.fire('Route non confirmer', '', 'info');
+                    Swal.fire('Route non confirmer', '', 'error');
                 }
             });
             return 0;
@@ -67,15 +67,11 @@ function btnPompier() {
             Swal.showLoading();
         },
     }).then(() => {
-        let myButton = document.getElementById("pompier");
-        myButton.disabled = true;
-        myButton.style.cursor = "not-allowed";
-        myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
-        myButton.textContent = "Pompier";
+        toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
         document.getElementById("routePomp").style.display = "block";
-        document.getElementById("accorderCrisePomp").style.display = "block";
-        document.getElementById("accorderCrisePolPomp").style.display = "block";
+        /*document.getElementById("accorderCrisePomp").style.display = "block";
+        document.getElementById("accorderCrisePolPomp").style.display = "block";*/
         ws.send(JSON.stringify({
             function: "pompier_connexion_request",
         }));
@@ -136,12 +132,20 @@ function routePompier() {
         }));
     });
 }
-function accorderCrisePompier() {
-    console.log("Route accordé pour les policiers");
+/*function accorderCrisePompier() {
+    console.log ("Route accordé pour les policiers");
     ws.send("accorderCrisePompier");
 }
+
 function accorderCrisePolPompier() {
-    console.log("Route accordé pour les pompiers");
+    console.log ("Route accordé pour les pompiers");
     ws.send("accorderCrisePolPompier");
+}*/
+function toggle_button(id, texte) {
+    let myButton = document.getElementById(id);
+    myButton.disabled = true;
+    myButton.style.cursor = "not-allowed";
+    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
+    myButton.textContent = texte;
 }
 //# sourceMappingURL=pompier.js.map

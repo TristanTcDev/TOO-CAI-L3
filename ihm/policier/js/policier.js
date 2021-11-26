@@ -3,8 +3,7 @@ let crisis_started = false;
 let myArrayOfThings = [
     { id: 1, name: 'Route 1' },
     { id: 2, name: 'Route 2' },
-    { id: 3, name: 'Route 3' },
-    { id: 4, name: 'Route 4' }
+    { id: 3, name: 'Route 3' }
 ];
 let options = {};
 window.addEventListener('load', Main);
@@ -53,11 +52,7 @@ function btnPolicier() {
             Swal.showLoading();
         },
     }).then(() => {
-        let myButton = document.getElementById("policier");
-        myButton.disabled = true;
-        myButton.style.cursor = "not-allowed";
-        myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
-        myButton.textContent = "Policier";
+        toggle_button("policier", "Policier");
         document.getElementById("idlePoli").style.display = "block";
         document.getElementById("routePoli").style.display = "block";
         ws.send(JSON.stringify({
@@ -100,7 +95,6 @@ function idlePolicier() {
 }
 function routePolicier() {
     myArrayOfThings.map((o) => { options[o.id] = o.name; });
-    delete options[1];
     Swal.fire({
         title: 'Choisissez la route à prendre',
         input: 'radio',
@@ -113,11 +107,19 @@ function routePolicier() {
             }
         }
     }).then((routePoli) => {
+        toggle_button("routePoli", "Route des Policiers");
         console.log("route policier fonctionne");
         ws.send(JSON.stringify({
             function: "routePolicier",
             data: routePoli.value
         }));
     });
+}
+function toggle_button(id, texte) {
+    let myButton = document.getElementById(id);
+    myButton.disabled = true;
+    myButton.style.cursor = "not-allowed";
+    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
+    myButton.textContent = texte;
 }
 //# sourceMappingURL=policier.js.map

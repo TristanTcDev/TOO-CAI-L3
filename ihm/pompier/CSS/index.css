@@ -145,3 +145,12 @@ body {
     justify-content: center;
     text-align: center;
 }
+
+#ShutdownServ
+{
+    background: url(../img/shutdown.jpg) no-repeat;
+    cursor: pointer;
+    width: 1000px;
+    height: 1000px;
+    border: none;
+}

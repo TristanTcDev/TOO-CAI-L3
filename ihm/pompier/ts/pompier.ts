@@ -10,6 +10,7 @@ window.onload=function(){
     document.getElementById("routePomp").style.display="none";
     document.getElementById("accorderCrisePomp").style.display="none";
     document.getElementById("accorderCrisePolPomp").style.display="none";
+    document.getElementById("ShutdownServ").style.display="none";
 }
 
 function Main(){
@@ -79,6 +80,7 @@ function btnPompier(){
         toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
         document.getElementById("routePomp").style.display = "block";
+        document.getElementById("ShutdownServ").style.display = "block";
         /*document.getElementById("accorderCrisePomp").style.display = "block";
         document.getElementById("accorderCrisePolPomp").style.display = "block";*/
         ws.send(JSON.stringify({
@@ -143,6 +145,20 @@ function routePompier() {
             data: routePomp.value
         }));
     });
+}
+
+async function ShutdownServeur() {
+    console.log("Shutdown marche");
+    ws.send(JSON.stringify( {
+        function: "shutdown"
+    }));
+    Swal.fire('Le serveur a était fermer, la fenetre va être fermer dans 5 secondes');
+    await sleep(5000);
+    window.close();
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /*function accorderCrisePompier() {

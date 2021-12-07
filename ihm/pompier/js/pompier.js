@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
 let crisis_started = false;
 window.addEventListener('load', Main);
@@ -6,6 +15,7 @@ window.onload = function () {
     document.getElementById("routePomp").style.display = "none";
     document.getElementById("accorderCrisePomp").style.display = "none";
     document.getElementById("accorderCrisePolPomp").style.display = "none";
+    document.getElementById("ShutdownServ").style.display = "none";
 };
 function Main() {
     ws.onmessage = function (e) {
@@ -74,6 +84,7 @@ function btnPompier() {
         toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
         document.getElementById("routePomp").style.display = "block";
+        document.getElementById("ShutdownServ").style.display = "block";
         /*document.getElementById("accorderCrisePomp").style.display = "block";
         document.getElementById("accorderCrisePolPomp").style.display = "block";*/
         ws.send(JSON.stringify({
@@ -135,6 +146,20 @@ function routePompier() {
             data: routePomp.value
         }));
     });
+}
+function ShutdownServeur() {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("Shutdown marche");
+        ws.send(JSON.stringify({
+            function: "shutdown"
+        }));
+        Swal.fire('Le serveur a était fermer, la fenetre va être fermer dans 5 secondes');
+        yield sleep(5000);
+        window.close();
+    });
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 /*function accorderCrisePompier() {
     console.log ("Route accordé pour les policiers");

@@ -31,7 +31,6 @@ function Main() {
         }
         if (dataObject.status === "disagree_route") {
             console.log(dataObject.route);
-            //myArrayOfThings.splice((dataObject.route)-1, 1);
             if (myArrayOfThings.length > 1) {
                 console.log(myArrayOfThings.length);
                 myArrayOfThings.splice(Number.parseInt(dataObject.route) - 1, 1);

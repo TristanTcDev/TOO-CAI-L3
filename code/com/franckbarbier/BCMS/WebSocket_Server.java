@@ -11,6 +11,8 @@ package com.franckbarbier.BCMS;
  */
 public class WebSocket_Server {
 
+    private static java.util.concurrent.CountDownLatch latch;
+
     @javax.websocket.server.ServerEndpoint(value = "/BCMS")
     public static class My_ServerEndpoint {
 
@@ -42,7 +44,6 @@ public class WebSocket_Server {
                             session.getBasicRemote().sendObject(error);
                         } else {
                             _sessions.put("Policier", session.getId());
-                            //_bCMS.PSC_connection_request();
                         }
                         break;
                     case "pompier":
@@ -52,7 +53,6 @@ public class WebSocket_Server {
                             session.getBasicRemote().sendObject(error);
                         } else {
                             _sessions.put("Pompier", session.getId());
-                            //_bCMS.FSC_connection_request();
                         }
                         break;
                 }
@@ -83,7 +83,7 @@ public class WebSocket_Server {
                             }
                         }
                         break;
-                    case "disagree_route_policier":                       
+                    case "disagree_route_policier":
                         _bCMS.FSC_disagrees_about_police_vehicle_route();
                         javax.json.JsonObject route_disagree = javax.json.Json.createObjectBuilder().add("status", "disagree_route").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {
@@ -92,6 +92,12 @@ public class WebSocket_Server {
                             }
                         }
                         break;
+                    case "shutdown":
+                        _bCMS.stop();
+                        for (javax.websocket.Session usr : sessions) {
+                            usr.close();
+                        }
+                        latch.countDown();
                 }
             }
             jsonReader.close();
@@ -130,7 +136,6 @@ public class WebSocket_Server {
     }
 
     public static void main(String args[]) {
-
         try {
             java.util.Map<String, Object> user_properties = new java.util.TreeMap<>(); // Dictionnaire contenant les paramètres utilisateurs (ne fonctionne pas, a besoin d'investigations...)
             user_properties.put("Author", "Tristan and Arnaud");
@@ -142,8 +147,10 @@ public class WebSocket_Server {
             //Je prends le message et j'appelle la bonne fonction
 
             //On peut utiliser la méthode .current_state(); pour checker l'etat de la crise
-            System.out.println("\n*** Please press any key to stop the server... ***\n");
-            System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
+            //System.out.println("\n*** Please press any key to stop the server... ***\n");
+            //System.in.read(); // Bloque le serveur dans l'attente d'un appuie sur une touche.
+            latch = new java.util.concurrent.CountDownLatch(1);
+            latch.await();
 
             server.stop();
 

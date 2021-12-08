@@ -93,6 +93,7 @@ public class WebSocket_Server {
                         }
                         break;
                     case "shutdown":
+                        _bCMS.close();
                         _bCMS.stop();
                         for (javax.websocket.Session usr : sessions) {
                             usr.close();

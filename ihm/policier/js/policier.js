@@ -33,13 +33,22 @@ function Main() {
             console.log(dataObject.route);
             if (myArrayOfThings.length > 1) {
                 console.log(myArrayOfThings.length);
-                myArrayOfThings.splice(Number.parseInt(dataObject.route) - 1, 1);
+                //myArrayOfThings.splice(Number.parseInt(dataObject.route)-1, 1);
+                let array = [];
+                myArrayOfThings.map(route => {
+                    if (route.id != Number.parseInt(dataObject.route)) {
+                        array.push(route);
+                    }
+                });
+                myArrayOfThings = array;
+                //myArrayOfThings.filter(route => route.id !== Number.parseInt(dataObject.route)-1);
                 console.log(myArrayOfThings.length);
+                console.log(myArrayOfThings);
                 routePolicier();
             }
             else {
                 Swal.fire({
-                    icon: 'important',
+                    icon: 'warning',
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
                 });

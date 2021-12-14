@@ -83,12 +83,49 @@ public class WebSocket_Server {
                             }
                         }
                         break;
+                     case "routePompier":
+                        System.out.println("Route Pompier");
+                        _bCMS.route_for_fire_trucks();
+                        javax.json.JsonObject routeP = javax.json.Json.createObjectBuilder().add("status", "valid_routeP").add("route", objarr.getString("data")).build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Pompier"))) {
+                                usr.getBasicRemote().sendObject(routeP);
+                            }
+                        }
+                        break;                   
                     case "disagree_route_policier":
                         _bCMS.FSC_disagrees_about_police_vehicle_route();
                         javax.json.JsonObject route_disagree = javax.json.Json.createObjectBuilder().add("status", "disagree_route").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {
                             if (usr.getId().equals(_sessions.get("Policier"))) {
                                 usr.getBasicRemote().sendObject(route_disagree);
+                            }
+                        }
+                        break;
+                    case "disagree_route_pompier":
+                        _bCMS.FSC_disagrees_about_fire_truck_route();
+                        javax.json.JsonObject route_disagreeP = javax.json.Json.createObjectBuilder().add("status", "disagree_routeP").add("route", objarr.getString("data")).build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
+                                usr.getBasicRemote().sendObject(route_disagreeP);
+                            }
+                        }
+                        break;
+                    case "agree_route_policier":
+                        _bCMS.FSC_agrees_about_police_vehicle_route();
+                        javax.json.JsonObject route_agree = javax.json.Json.createObjectBuilder().add("status", "agree_route").add("route", objarr.getString("data")).build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
+                                usr.getBasicRemote().sendObject(route_agree);
+                            }
+                        }
+                        break;
+                    case "agree_route_pompier":
+                        _bCMS.FSC_agrees_about_fire_truck_route();
+                        javax.json.JsonObject route_agreeP = javax.json.Json.createObjectBuilder().add("status", "agree_routeP").add("route", objarr.getString("data")).build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
+                                usr.getBasicRemote().sendObject(route_agreeP);
                             }
                         }
                         break;

@@ -7,7 +7,6 @@ declare const Swal:any;
 window.addEventListener('load', Main);
 window.onload=function(){
     document.getElementById("idlePomp").style.display="none";
-    document.getElementById("routePomp").style.display="none";
     document.getElementById("accorderCrisePomp").style.display="none";
     document.getElementById("accorderCrisePolPomp").style.display="none";
     document.getElementById("ShutdownServ").style.display="none";
@@ -31,6 +30,33 @@ function Main(){
             crisis_started = true;
             Swal.close();
         }
+        if (dataObject.status==="valid_routeP") {
+            Swal.fire({
+                title: 'Les pompiers veulent prendre la route ' + dataObject.route,
+                showDenyButton: true,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: 'Route confirmer',
+                denyButtonText: `Route non confirmer`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Route confirmer!', '', 'success')
+                    ws.send(JSON.stringify( {
+                        function: "agree_route_pompier",
+                        data: dataObject.route
+                    }));
+                } else if (result.isDenied) {
+                    Swal.fire('Route non confirmer', '', 'error')
+                    ws.send(JSON.stringify({
+                        function: "disagree_route_pompier",
+                        data: dataObject.route
+                    }));
+                }
+            })
+            return 0;
+        }
         if (dataObject.status==="valid_route") {
             Swal.fire({
                 title: 'Les policiers veulent prendre la route ' + dataObject.route,
@@ -44,6 +70,10 @@ function Main(){
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire('Route confirmer!', '', 'success')
+                    ws.send(JSON.stringify( {
+                        function: "agree_route_policier",
+                        data: dataObject.route
+                    }));
                 } else if (result.isDenied) {
                     Swal.fire('Route non confirmer', '', 'error')
                     ws.send(JSON.stringify({
@@ -79,7 +109,6 @@ function btnPompier(){
     }).then(() => {
         toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
-        document.getElementById("routePomp").style.display = "block";
         document.getElementById("ShutdownServ").style.display = "block";
         /*document.getElementById("accorderCrisePomp").style.display = "block";
         document.getElementById("accorderCrisePolPomp").style.display = "block";*/
@@ -122,29 +151,6 @@ function idlePompier() {
             data: nbCamions.value
         }));
     })
-}
-
-function routePompier() {
-    Swal.fire({
-        title: 'Choisissez la route à prendre',
-        input: 'radio',
-        inputOptions: {
-            'Route 1': '1',
-            'Route 2': '2',
-            'Route 3': '3'
-        },
-        inputValidator: (value) => {
-            if (!value) {
-                return 'Choisissez une route.'
-            }
-        }
-    }).then((routePomp) => {
-        console.log(routePomp.value);
-        ws.send(JSON.stringify({
-            function: "state_car",
-            data: routePomp.value
-        }));
-    });
 }
 
 async function ShutdownServeur() {

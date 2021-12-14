@@ -45,8 +45,15 @@ function Main(){
             console.log(dataObject.route);
             if ( myArrayOfThings.length > 1) {
                 console.log(myArrayOfThings.length);
-                myArrayOfThings.splice(Number.parseInt(dataObject.route)-1, 1);
+                let array = []
+                myArrayOfThings.map(route =>{
+                    if(route.id != Number.parseInt(dataObject.route)){
+                        array.push(route);
+                    }
+                });
+                myArrayOfThings = array;
                 console.log(myArrayOfThings.length);
+                console.log(myArrayOfThings);
                 routePolicier();
             }
             else {

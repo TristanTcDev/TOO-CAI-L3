@@ -151,6 +151,8 @@ function idlePompier() {
         icon: 'question',
         input: 'range',
         inputLabel: 'Nombre de camions',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         inputAttributes:{
             min: 1,
             max: 10,
@@ -178,6 +180,8 @@ function idlePompier() {
                 ws.send(JSON.stringify({
                     function: "pompier_truck_request",
                 }));
+                document.getElementById("updcrise").textContent = "Crise pris en compte";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
                 Swal.fire({
                     toast: true,
                     icon: 'success',
@@ -192,8 +196,10 @@ function idlePompier() {
                 })
             })
         }
-        document.getElementById("updcrise").textContent = "Crise pris en compte";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+        else {
+            document.getElementById("updcrise").textContent = "Crise pris en compte";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+        }
     })
 }
 
@@ -285,6 +291,8 @@ function vireraffi(id: string) {
             function: "all_fireman_truck_arrived"
         }));
         if(!all_police_car_arrived){
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
             Swal.fire({
                 title: 'En attente',
                 html: 'Attente de l\'arrivée de tous les véhicules des Policiers',
@@ -295,8 +303,10 @@ function vireraffi(id: string) {
                 },
             })
         }
-        document.getElementById("updcrise").textContent = "Crise résolus";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        else {
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        }
     }
 }
 

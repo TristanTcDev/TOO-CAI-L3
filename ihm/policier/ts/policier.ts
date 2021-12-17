@@ -225,6 +225,8 @@ function idlePolicier() {
         icon: 'question',
         input: 'range',
         inputLabel: 'Nombre de voiture',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         inputAttributes:{
             min: 1,
             max: 10,
@@ -252,6 +254,10 @@ function idlePolicier() {
                 ws.send(JSON.stringify({
                     function: "police_car_request",
                 }));
+                document.getElementById("updcrise").textContent = "Crise pris en compte";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+                document.getElementById("routePoli").style.display = "block";
+                document.getElementById("routePomp").style.display = "block";
                 Swal.fire({
                     toast: true,
                     icon: 'success',
@@ -266,10 +272,12 @@ function idlePolicier() {
                 })
             })
         }
-        document.getElementById("routePoli").style.display = "block";
-        document.getElementById("routePomp").style.display = "block";
-        document.getElementById("updcrise").textContent = "Crise pris en compte";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+        else {
+            document.getElementById("updcrise").textContent = "Crise pris en compte";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+            document.getElementById("routePoli").style.display = "block";
+            document.getElementById("routePomp").style.display = "block";
+        }
     })
 }
 
@@ -330,7 +338,7 @@ function buttonNbPoliciers(e) {
 
     leftdis += 7;
 
-    document.getElementById("updcrise").textContent = "Crise entraind d\'être résolus";
+    document.getElementById("updcrise").textContent = "Crise entrain d\'être résolus";
     document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 
@@ -359,6 +367,8 @@ function vireraffi(id: string) {
             function: "all_police_car_arrived"
         }));
         if(!all_fireman_truck_arrived){
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
             Swal.fire({
                 title: 'En attente',
                 html: 'Attente de l\'arrivée de tous les véhicules des Pompiers',
@@ -369,8 +379,10 @@ function vireraffi(id: string) {
                 },
             })
         }
-        document.getElementById("updcrise").textContent = "Crise résolus";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        else {
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        }
     }
 }
 

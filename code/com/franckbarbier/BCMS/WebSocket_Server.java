@@ -173,11 +173,11 @@ public class WebSocket_Server {
                             System.out.println(BCMS.Status.Dispatched + ": " + s);
                         }
                         break;
-                    case "route_choisis":
-                        javax.json.JsonObject routechoisis = javax.json.Json.createObjectBuilder().add("status", "route_pompiers_choisis").add("data", true).build();
+                    case "route_poli_choisis":
+                        javax.json.JsonObject routepolichoisis = javax.json.Json.createObjectBuilder().add("status", "route_policier_choisis").build();
                         for (javax.websocket.Session usr : sessions) {
                             if (usr.getId().equals(_sessions.get("Pompier"))) {
-                                usr.getBasicRemote().sendObject(routechoisis);
+                                usr.getBasicRemote().sendObject(routepolichoisis);
                             }
                         }
                         break;

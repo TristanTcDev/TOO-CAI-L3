@@ -1,7 +1,13 @@
-const ws = new WebSocket('ws://localhost:1963/achaubet/BCMS'); //WebSocket coté client
+const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
+let leftdis: number = 10;
 let crisis_started: boolean = false;
+let pompier_truck_ok = false;
 let checkpomp: boolean = false;
 let checkpol: boolean = false;
+let pc: string = "Route des Policiers";
+let pp: string = "Route des Pompiers";
+let nbCar: number;
+let checkarrive: number = 0;
 let myArrayOfThings = [
     {id: 1, name: 'Route 1'},
     {id: 2, name: 'Route 2'},
@@ -58,62 +64,110 @@ function Main(){
             }
             else {
                 if (checkpomp === false) {
-                    toggle_buttonPom("routePomp", "Route des Pompiers");
+                    toggle_buttonPom("routePomp", pp);
                 }
+                toggle_button("routePoli", "Route par défaut pour les policiers");
+                pc = "Route par défaut pour les policiers"
                 Swal.fire({
                     icon: 'warning',
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
                 })
+                for (let i = 1; i <= nbCar; i++) {
+                    buttonNbPoliciers(i);
+                }
+
             }
         }
         if(dataObject.status==="disagree_routeP"){
             console.log(dataObject.route);
             if ( myArrayOfThingsP.length > 1) {
                 console.log(myArrayOfThingsP.length);
-                myArrayOfThingsP.splice(Number.parseInt(dataObject.route)-1, 1);
+                let array = []
+                myArrayOfThingsP.map(route =>{
+                    if(route.id != Number.parseInt(dataObject.route)){
+                        array.push(route);
+                    }
+                });
+                myArrayOfThingsP = array;
                 console.log(myArrayOfThingsP.length);
+                console.log(myArrayOfThingsP);
                 routePompier();
             }
             else {
                 if (checkpol === false) {
-                    toggle_buttonPol("routePoli", "Route des Policiers");
+                    toggle_buttonPol("routePoli", pc);
                 }
+                toggle_button("routePomp", "Route par défaut pour les pompiers");
+                pp = "Route par défaut pour les pompiers"
                 Swal.fire({
                     icon: 'warning',
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
                 })
+                ws.send(JSON.stringify({
+                    function: "route_choisis",
+                }));
             }
         }
 
         if(dataObject.status==="agree_route"){
             if (checkpomp === false) {
-                toggle_buttonPom("routePomp", "Route des Pompiers");
+                toggle_buttonPom("routePomp", pp);
+            }
+            if (dataObject.route === "1") {
+                toggle_button("routePoli", "La " + dataObject.route + "ere route a était choisis par les policiers");
+                pc = "La " + dataObject.route + "ere route a était choisis par les policiers"
+            }
+            else {
+                toggle_button("routePoli", "La " + dataObject.route + "eme route a était choisis par les policiers");
+                pc = "La " + dataObject.route + "eme route a était choisis par les policiers"
             }
             Swal.fire(
                 'Route validé!',
                 'La route a était validé!',
                 'success'
             )
+            for (let i = 1; i <= nbCar; i++) {
+                buttonNbPoliciers(i);
+            }
         }
 
         if(dataObject.status==="agree_routeP"){
             if (checkpol === false) {
-                toggle_buttonPol("routePoli", "Route des Policiers");
+                toggle_buttonPol("routePoli", pc);
+            }
+            if (dataObject.route === "1") {
+                toggle_button("routePomp", "La " + dataObject.route + "ere route a était choisis par les pompiers");
+                pp = "La " + dataObject.route + "ere route a était choisis par les pompiers"
+            }
+            else {
+                toggle_button("routePomp", "La " + dataObject.route + "eme route a était choisis par les pompiers");
+                pp = "La " + dataObject.route + "eme route a était choisis par les pompiers"
             }
             Swal.fire(
                 'Route validé!',
-                'La route a était validé!',
+                'La route a était validé pompier!',
                 'success'
             )
+            ws.send(JSON.stringify({
+                function: "route_choisis",
+            }));
+        }
+
+        if(dataObject.status==="pompier_truck_ok"){
+            Swal.close();
+            pompier_truck_ok = true;
         }
 
     };
     ws.onopen = function() {
         ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
     };
-    ws.onclose = function(e){
+    ws.onclose = async function(e){
+        Swal.fire('Le serveur a était fermer, la fenetre va être fermer dans 5 secondes');
+        await sleep(5000);
+        window.close();
         console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
     };
 }
@@ -134,8 +188,6 @@ function btnPolicier(){
     }).then(() => {
         toggle_button("policier", "Policier");
         document.getElementById("idlePoli").style.display = "block";
-        document.getElementById("routePoli").style.display = "block";
-        document.getElementById("routePomp").style.display = "block";
         ws.send(JSON.stringify({
             function: "police_connexion_request",
         }));
@@ -168,13 +220,124 @@ function idlePolicier() {
         },
         inputValue: 1
     }).then((nbVoitures) => {
+        nbCar = nbVoitures.value;
+        toggle_button("idlePoli", nbVoitures.value + "  véhicule disponible");
         console.log(nbVoitures.value);
         ws.send(JSON.stringify({
             function: "state_car",
             data: nbVoitures.value
         }));
+        ws.send(JSON.stringify({
+            function: "routeChoisisPol",
+        }));
+        document.getElementById("routePoli").style.display = "block";
+        document.getElementById("routePomp").style.display = "block";
+        if(!pompier_truck_ok){
+            Swal.fire({
+                title: 'En attente',
+                html: 'Attente de l\'envoie des véhicule des Pompiers',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+            }).then(() => {
+                ws.send(JSON.stringify({
+                    function: "police_car_request",
+                }));
+                Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    title: 'Les pompiers on envoyer le véhicule',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+            })
+        }
     })
 }
+
+function buttonNbPoliciers(e) {
+    let x = document.createElement("button");
+    x.id = ("button_dispatched" + e);
+    x.className = "button_dispatched";
+    document.body.appendChild(x);
+    document.getElementById(x.id).onclick = function() {dispaffi(x.id)};
+    let myButton = <HTMLInputElement>document.getElementById(x.id);
+    myButton.textContent = "Dispatcher #" + e;
+    myButton.style.alignItems = "center";
+    myButton.style.color = "white";
+    myButton.style.fontWeight= "bold";
+    myButton.style.top = "55%";
+    myButton.style.left = leftdis + "%";
+    myButton.style.width = "5%";
+    myButton.style.height = "4%";
+    myButton.style.position = "absolute";
+    myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%)";
+    myButton.style.border = "1";
+    myButton.style.borderRadius = "8px";
+    myButton.style.boxShadow = "rgba(151, 65, 252, 0.2) 0 15px 30px -5px";
+    myButton.style.boxSizing = "border-box";
+    myButton.style.fontFamily = "Phantomsans, sans-serif";
+    myButton.style.fontSize = "15px";
+    myButton.style.justifyContent = "center";
+    myButton.style.padding = "3px";
+    myButton.style.cursor = "pointer";
+
+
+    let y = document.createElement("button");
+    y.id = ("button_arrive" + e);
+    y.className = "button_arrive";
+    document.body.appendChild(y);
+    document.getElementById(y.id).onclick = function() {vireraffi(y.id)};
+    let myButtonAri = <HTMLInputElement>document.getElementById(y.id);
+    myButtonAri.style.display = "none";
+    myButtonAri.textContent = "Arrivé #" + e;
+    myButtonAri.style.alignItems = "center";
+    myButtonAri.style.color = "white";
+    myButtonAri.style.fontWeight= "bold";
+    myButtonAri.style.top = "70%";
+    myButtonAri.style.left = leftdis + "%";
+    myButtonAri.style.width = "5%";
+    myButtonAri.style.height = "4%";
+    myButtonAri.style.position = "absolute";
+    myButtonAri.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%)";
+    myButtonAri.style.border = "1";
+    myButtonAri.style.borderRadius = "8px";
+    myButtonAri.style.boxShadow = "rgba(151, 65, 252, 0.2) 0 15px 30px -5px";
+    myButtonAri.style.boxSizing = "border-box";
+    myButtonAri.style.fontFamily = "Phantomsans, sans-serif";
+    myButtonAri.style.fontSize = "15px";
+    myButtonAri.style.justifyContent = "center";
+    myButtonAri.style.padding = "3px";
+    myButtonAri.style.cursor = "pointer";
+
+    leftdis += 7;
+}
+
+function dispaffi(id: string) {
+    let a = id.slice(-1);
+    toggle_button(id, "Vehicule Dispatcher");
+    let myButton = <HTMLInputElement>document.getElementById("button_arrive" + a);
+    myButton.style.display = "block";
+    toggle_buttonPol("button_arrive" + a, "Arrivé #" + a);
+}
+
+function vireraffi(id: string) {
+    toggle_button(id, "Vehicule arrivé");
+    checkarrive += 1;
+    if (checkarrive >= nbCar) {
+        ws.send(JSON.stringify({
+            function: "voiturepoliarriver"
+        }));
+    }
+}
+
 
 function routePolicier() {
         let options = {};
@@ -190,16 +353,16 @@ function routePolicier() {
                 return 'Choisissez une route.'
             }
         }
-    }).then((routePoli) => {
+        }).then((routePoli) => {
             checkpol = true;
-            toggle_button("routePomp", "Route des Pompiers")
-            toggle_button("routePoli", "Route des Policiers")
+            toggle_button("routePomp", pp)
+            toggle_button("routePoli", pc)
             console.log ("route policier fonctionne");
             ws.send(JSON.stringify({
                 function: "routePolicier",
                 data: routePoli.value
             }));
-    });
+        });
 }
 
 function routePompier() {
@@ -218,8 +381,8 @@ function routePompier() {
         }
     }).then((routePomp) => {
         checkpomp = true;
-        toggle_button("routePomp", "Route des Pompiers")
-        toggle_button("routePoli", "Route des Policiers")
+        toggle_button("routePomp", pp)
+        toggle_button("routePoli", pc)
         console.log ("route pompier fonctionne");
         ws.send(JSON.stringify({
             function: "routePompier",
@@ -250,4 +413,8 @@ function toggle_buttonPol ( id: string, texte: string) {
     myButton.style.cursor = "pointer";
     myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%)";
     myButton.textContent = texte;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

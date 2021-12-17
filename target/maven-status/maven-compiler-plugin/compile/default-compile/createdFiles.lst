@@ -2,5 +2,5 @@ com/franckbarbier/BCMS/WebSocket_Server.class
 com/franckbarbier/BCMS/WebSocket_Server$My_ServerEndpoint.class
 com/franckbarbier/BCMS/BCMS$Status.class
 com/franckbarbier/BCMS/BCMS.class
-com/franckbarbier/BCMS/Timeout_log.class
 module-info.class
+com/franckbarbier/BCMS/Timeout_log.class

@@ -1,7 +1,6 @@
 const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
 let leftdis: number = 10;
 let crisis_started: boolean = false;
-let route_policeman = false;
 let fireman_truck_ok = false;
 let all_fireman_truck_arrived = false;
 let checkpomp: boolean = false;
@@ -10,6 +9,7 @@ let pc: string = "Route des Policiers";
 let pp: string = "Route des Pompiers";
 let nbCar: number;
 let checkarrive: number = 0;
+
 let myArrayOfThings = [
     {id: 1, name: 'Route 1'},
     {id: 2, name: 'Route 2'},
@@ -44,10 +44,16 @@ function Main(){
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => {ws.close()}).then(() => {window.close();})
         }
+        /*
+        * Appeler lorsque la crise démarre
+         */
         if(dataObject.state==="crisis_started"){
             crisis_started = true;
             Swal.close();
         }
+        /*
+        * Appeler si les pompiers on refuser la route que les policiers était censé prendre
+         */
         if(dataObject.status==="disagree_route"){
             console.log(dataObject.route);
             if ( myArrayOfThings.length > 1) {
@@ -82,6 +88,9 @@ function Main(){
                     }
             }
         }
+        /*
+        * Appeler si les pompiers on refuser la route proposer par les policiers qu'ils étaient censé prendre
+         */
         if(dataObject.status==="disagree_routeP"){
             console.log(dataObject.route);
             if ( myArrayOfThingsP.length > 1) {
@@ -111,7 +120,9 @@ function Main(){
                 document.getElementById("routePoli").style.display = "block";
             }
         }
-
+        /*
+        * Appeler si les pompiers on accepter la route proposer pour les policiers
+         */
         if(dataObject.status==="agree_route"){
             if (checkpomp === false) {
                 toggle_buttonPom("routePomp", pp);
@@ -138,6 +149,9 @@ function Main(){
                 }
         }
 
+        /*
+        * Appeler si les pompiers on accepter la route proposer pour eux même
+         */
         if(dataObject.status==="agree_routeP"){
             if (checkpol === false) {
                 toggle_buttonPol("routePoli", pc);
@@ -158,10 +172,17 @@ function Main(){
             document.getElementById("routePoli").style.display = "block";
         }
 
+        /*
+        *  Appeler lorsque les pompiers on validé leur nombre de véhicule
+        *  */
         if(dataObject.status==="fireman_truck_ok"){
             Swal.close();
             fireman_truck_ok = true;
         }
+
+        /*
+        * Vérifie si tout les véhicule de police sont arrivé
+         */
         if(dataObject.status==="all_fireman_truck_arrived"){
             Swal.close();
             all_fireman_truck_arrived = true;
@@ -178,6 +199,12 @@ function Main(){
         console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
     };
 }
+
+/*
+* Représenter par le bouton "Policier" central
+* Ce bouton permet au policier, lorsqu'il est presser, de ce connecter au PSC
+* Si les pompiers ne sont pas encore connecter ça les met en attente
+* */
 
 function btnPolicier(){
     console.log("Je suis un policier");
@@ -212,6 +239,11 @@ function btnPolicier(){
         })
     })
 }
+
+/*
+* Représenter par le bouton "Nombre de véhicule des policiers"
+* Ce bouton permet de selectionner le nombre de véhicule à envoyer
+ */
 
 function idlePolicier() {
     Swal.fire({
@@ -272,6 +304,9 @@ function idlePolicier() {
         }
     })
 }
+/*
+* Cette fonction permet la création des différent button dispatched et arrivé
+ */
 
 function buttonNbPoliciers(e) {
     let x = document.createElement("button");
@@ -334,6 +369,11 @@ function buttonNbPoliciers(e) {
     document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 
+/*
+* Cette fonction est appeler lors de l'appuie sur les boutons "dispatcher  #"
+* Elle permet de changer l'affichage des boutons dispatcher
+*/
+
 function dispaffi(id: string) {
     let a = id.slice(-1);
     toggle_button(id, "Vehicule Dispatcher");
@@ -345,6 +385,11 @@ function dispaffi(id: string) {
         data: a,
     }));
 }
+
+/*
+* Cette fonction est appeler lors de l'appuie sur les boutons "arrivé  #"
+* Elle permet de changer l'affichage des boutons arrivé
+*/
 
 function vireraffi(id: string) {
     toggle_button(id, "Vehicule arrivé");
@@ -380,6 +425,9 @@ function vireraffi(id: string) {
     }
 }
 
+/*
+* Permet le choix de la route à proposer au pompiers pour les policiers
+ */
 
 function routePolicier() {
         let options = {};
@@ -407,6 +455,9 @@ function routePolicier() {
         });
 
 }
+/*
+* Permet le choix de la route à proposer au pompiers pour les pompiers
+ */
 
 function routePompier() {
     let options = {};
@@ -434,6 +485,11 @@ function routePompier() {
     });
 }
 
+/*
+* Fonction qui permet le changement de couleur des différent bouton
+* En l'occurence elle permet de les griser et les rendre non cliquable
+ */
+
 function toggle_button ( id: string, texte: string) {
     let myButton = <HTMLInputElement>document.getElementById(id);
     myButton.disabled = true;
@@ -441,6 +497,11 @@ function toggle_button ( id: string, texte: string) {
     myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
     myButton.textContent = texte;
 }
+
+/*
+* Fonction qui permet le changement de couleur des différent bouton
+* En l'occurence elle permet de les rendre rouge et cliquable
+ */
 
 function toggle_buttonPom ( id: string, texte: string) {
     let myButton = <HTMLInputElement>document.getElementById(id);
@@ -450,6 +511,11 @@ function toggle_buttonPom ( id: string, texte: string) {
     myButton.textContent = texte;
 }
 
+/*
+* Fonction qui permet le changement de couleur des différent bouton
+* En l'occurence elle permet de les rendre bleu et cliquable
+ */
+
 function toggle_buttonPol ( id: string, texte: string) {
     let myButton = <HTMLInputElement>document.getElementById(id);
     myButton.disabled = false;
@@ -457,6 +523,10 @@ function toggle_buttonPol ( id: string, texte: string) {
     myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,26,102,1) 15%, rgba(15,26,102,1) 85%, rgba(0,0,0,1) 100%)";
     myButton.textContent = texte;
 }
+
+/*
+* Fonction permettant de faire une pause durant une durée souhaiter
+*/
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

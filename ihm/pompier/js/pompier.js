@@ -153,6 +153,8 @@ function idlePompier() {
         icon: 'question',
         input: 'range',
         inputLabel: 'Nombre de camions',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         inputAttributes: {
             min: 1,
             max: 10,
@@ -180,6 +182,8 @@ function idlePompier() {
                 ws.send(JSON.stringify({
                     function: "pompier_truck_request",
                 }));
+                document.getElementById("updcrise").textContent = "Crise pris en compte";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
                 Swal.fire({
                     toast: true,
                     icon: 'success',
@@ -194,8 +198,10 @@ function idlePompier() {
                 });
             });
         }
-        document.getElementById("updcrise").textContent = "Crise pris en compte";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+        else {
+            document.getElementById("updcrise").textContent = "Crise pris en compte";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
+        }
     });
 }
 function buttonNbPompier(e) {

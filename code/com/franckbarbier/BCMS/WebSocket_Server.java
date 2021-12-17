@@ -13,13 +13,13 @@ import java.math.BigDecimal;
  */
 public class WebSocket_Server {
 
-    private static java.util.concurrent.CountDownLatch latch;
+    private static java.util.concurrent.CountDownLatch latch; // Création d'un verrou pour le serveur
 
     @javax.websocket.server.ServerEndpoint(value = "/BCMS")
     public static class My_ServerEndpoint {
 
-        private static java.util.Map<String, String> _sessions = new java.util.HashMap<>(); // Key: Policier or Pompier, Value: sessionId
-        private static BCMS _bCMS = null;
+        private static java.util.Map<String, String> _sessions = new java.util.HashMap<>(); // Clé: Policier ou Pompier, Valeur: sessionId
+        private static BCMS _bCMS = null; // Attribut _bCMS qui nous permettra d'appeler les méthodes de classe lors de son instanciation
 
         @javax.websocket.OnClose
         public void onClose(javax.websocket.Session session, javax.websocket.CloseReason close_reason) {
@@ -34,9 +34,8 @@ public class WebSocket_Server {
         @javax.websocket.OnMessage
         public void onMessage(javax.websocket.Session session, String message) throws java.lang.Exception {
             java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
-            javax.json.JsonReader jsonReader = javax.json.Json.createReader(new java.io.StringReader(message));
-            System.out.println("Message de JavaScript: " + message);
-            javax.json.JsonObject objarr = jsonReader.readObject();
+            javax.json.JsonReader jsonReader = javax.json.Json.createReader(new java.io.StringReader(message)); // Transformation du message en JSON
+            javax.json.JsonObject objarr = jsonReader.readObject(); // Lecture du JSON et transformation de celui-ci en jsonObject
             if (objarr.containsKey("id")) {
                 switch (objarr.getString("id")) {
                     case "policier":
@@ -147,7 +146,7 @@ public class WebSocket_Server {
                         for (javax.websocket.Session usr : sessions) {
                             usr.close();
                         }
-                        latch.countDown();
+                        latch.countDown(); // On abaisse le verrou qui va "debloquer" le main
                         break;
                     case "dispatch_truck_fireman":
                         _bCMS.fire_truck_dispatched("Fire truck #" + objarr.getString("data"));
@@ -198,11 +197,10 @@ public class WebSocket_Server {
                         }
                         break;
                 }
-
             }
             jsonReader.close();
-            if (_sessions.size() == 2 && _bCMS == null) {
-                _crisis_start(session);
+            if (_sessions.size() == 2 && _bCMS == null) { // Si les deux clients sont connectés et que l'attribut _bCMS n'est pas instancié
+                _crisis_start(session); // Alors on appelle la méthode _crisis_start
             }
         }
 
@@ -214,10 +212,10 @@ public class WebSocket_Server {
         }
 
         private void _crisis_start(javax.websocket.Session session) throws java.io.IOException, java.lang.Exception {
-            java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
+            java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions(); // On recupère les sessions ouvertes dans un Set
             try {
-                _bCMS = new BCMS();
-                _bCMS.start();
+                _bCMS = new BCMS(); // Instanciation de l'attribut _bCMS
+                _bCMS.start(); // On appelle la méthode d'instanciation start() pour démarrer le serveur
             } catch (java.lang.Exception e) {
                 for (javax.websocket.Session usr : sessions) {
                     javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("error", "error_bcms_start").build();
@@ -226,8 +224,8 @@ public class WebSocket_Server {
                 e.printStackTrace();
             }
             for (javax.websocket.Session usr : sessions) {
-                javax.json.JsonObject error = javax.json.Json.createObjectBuilder().add("state", "crisis_started").build();
-                usr.getBasicRemote().sendObject(error);
+                javax.json.JsonObject crisis_started = javax.json.Json.createObjectBuilder().add("state", "crisis_started").build();
+                usr.getBasicRemote().sendObject(crisis_started); // On envoie aux clients que la crise à bien démmarée
             }
         }
     }
@@ -238,11 +236,11 @@ public class WebSocket_Server {
             user_properties.put("Author", "Tristan and Arnaud");
             org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963, "/BCMS_Server", user_properties, WebSocket_Server.My_ServerEndpoint.class); //Paramètres du serveur : nom de domaine, port, dossier dans l'url, propriétés utilisateur, classe contenant ServerEndPoint pour communiquer avec JavaScript.
             server.start(); //Démarrage du serveur WebSocket
-            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "pompier" + java.io.File.separatorChar + "pompier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
-            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "policier" + java.io.File.separatorChar + "policier.html").toUri()); //Ouvre le index.html dans une nouvelle fenètre du naviagteur par défaut.
-            latch = new java.util.concurrent.CountDownLatch(1);
-            latch.await();
-            server.stop();
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "pompier" + java.io.File.separatorChar + "pompier.html").toUri()); //Ouvre le pompier.html dans une nouvelle fenètre du naviagteur par défaut.
+            java.awt.Desktop.getDesktop().browse(java.nio.file.FileSystems.getDefault().getPath("ihm" + java.io.File.separatorChar + "policier" + java.io.File.separatorChar + "policier.html").toUri()); //Ouvre le policier.html dans une nouvelle fenètre du naviagteur par défaut.
+            latch = new java.util.concurrent.CountDownLatch(1);  // On mets le verrou à 1
+            latch.await(); // On attends que la crise soit terminée pour éteindre le serveur
+            server.stop(); // Arret du serveur
         } catch (Throwable t) {
             t.printStackTrace();
         }

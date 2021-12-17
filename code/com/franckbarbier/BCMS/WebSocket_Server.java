@@ -5,6 +5,8 @@
  */
 package com.franckbarbier.BCMS;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author arnaud
@@ -172,7 +174,7 @@ public class WebSocket_Server {
                         }
                         break;
                     case "route_choisis":
-                        javax.json.JsonObject routechoisis = javax.json.Json.createObjectBuilder().add("status", "route_pompiers_choisis").build();
+                        javax.json.JsonObject routechoisis = javax.json.Json.createObjectBuilder().add("status", "route_pompiers_choisis").add("data", true).build();
                         for (javax.websocket.Session usr : sessions) {
                             if (usr.getId().equals(_sessions.get("Pompier"))) {
                                 usr.getBasicRemote().sendObject(routechoisis);

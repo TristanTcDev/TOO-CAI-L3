@@ -94,6 +94,7 @@ function Main() {
             return 0;
         }
         if (dataObject.status === "route_pompiers_choisis") {
+            console.log(dataObject.data);
             for (let i = 1; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }
@@ -129,7 +130,6 @@ function btnPompier() {
     }).then(() => {
         toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
-        document.getElementById("ShutdownServ").style.display = "block";
         ws.send(JSON.stringify({
             function: "pompier_connexion_request",
         }));
@@ -297,11 +297,13 @@ function vireraffi(id) {
             }).then(() => {
                 document.getElementById("updcrise").textContent = "Crise résolus";
                 document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+                document.getElementById("ShutdownServ").style.display = "block";
             });
         }
         else {
             document.getElementById("updcrise").textContent = "Crise résolus";
             document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+            document.getElementById("ShutdownServ").style.display = "block";
         }
     }
 }

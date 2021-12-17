@@ -87,6 +87,7 @@ function Main(){
             return 0;
         }
         if (dataObject.status === "route_pompiers_choisis") {
+            console.log(dataObject.data);
             for (let i = 1; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }

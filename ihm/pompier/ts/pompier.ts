@@ -38,7 +38,7 @@ function Main(){
             Swal.close();
         }
         /*
-        * Appeler lorsque les policiers on proposer une route pour les pompiers, permet au pompier de valider ou non la route
+        * Appeler lorsque les policiers ont proposé une route pour les pompiers, permet au pompier de valider ou non la route
          */
         if (dataObject.status==="valid_routeP") {
             Swal.fire({
@@ -68,7 +68,7 @@ function Main(){
             return 0;
         }
         /*
-        * Appeler lorsque les policiers on proposer une route pour eux même permet au pompier de valider ou non la route
+        * Appeler lorsque les policiers ont proposé une route pour eux même permet au pompier de valider ou non la route
          */
         if (dataObject.status==="valid_route") {
             Swal.fire({
@@ -105,7 +105,7 @@ function Main(){
             }
         }
         /*
-        *  Appeler lorsque les policiers on validé leur nombre de véhicule
+        *  Appeler lorsque les policiers ont validé leur nombre de véhicules
         *  */
         if(dataObject.status==="policier_car_ok"){
             Swal.close();
@@ -113,7 +113,7 @@ function Main(){
         }
 
         /*
-        * Vérifie si tout les véhicule de police sont arrivé
+        * Vérifie si tout les véhicules de police sont arrivé
          */
         if(dataObject.status==="all_police_car_arrived"){
             Swal.close();
@@ -121,17 +121,17 @@ function Main(){
         }
     };
     ws.onopen = function() {
-        ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
+        ws.send(JSON.stringify({message: "Bonjour Java"})); //Envoi de ce message au serveur Java WebSocket (voir console NetBeans)
     };
     ws.onclose = function(e){
-        console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
+        console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On récupère le code d'extinction du serveur
     };
 }
 
 /*
 * Représenter par le bouton "Pompier" central
-* Ce bouton permet au policier, lorsqu'il est presser, de ce connecter au FSC
-* Si les policiers ne sont pas encore connecter ça les met en attente
+* Ce bouton permet au policier, lorsqu'il est presser, de se connecter au FSC
+* Si les policiers ne sont pas encore connecté ça les met en attente
 * */
 
 function btnPompier(){
@@ -231,7 +231,7 @@ function idlePompier() {
 }
 
 /*
-* Cette fonction permet la création des différent button dispatched et arrivé
+* Cette fonction permet la création des différents button dispatched et arrivé
  */
 
 function buttonNbPompier(e) {
@@ -296,7 +296,7 @@ function buttonNbPompier(e) {
 }
 
 /*
-* Cette fonction est appeler lors de l'appuie sur les boutons "dispatcher  #"
+* Cette fonction est appelée lors de l'appuie sur les boutons "dispatcher  #"
 * Elle permet de changer l'affichage des boutons dispatcher
 */
 
@@ -313,7 +313,7 @@ function dispaffi(id: string) {
 }
 
 /*
-* Cette fonction est appeler lors de l'appuie sur les boutons "arrivé  #"
+* Cette fonction est appelée lors de l'appuie sur les boutons "arrivé  #"
 * Elle permet de changer l'affichage des boutons arrivé
 */
 
@@ -352,8 +352,8 @@ function vireraffi(id: string) {
 }
 
 /*
-* Cette fonction est appeler lors de l'appuie sur les "shutdown"
-* Elle permet au serveur de ce fermer lors de l'appuie sur le dit bouton
+* Cette fonction est appelée lors de l'appuie sur les "shutdown"
+* Elle permet au serveur de se fermer lors de l'appuie sur le dit bouton
 */
 
 async function ShutdownServeur() {
@@ -366,7 +366,7 @@ async function ShutdownServeur() {
 }
 
 /*
-* Fonction qui permet le changement de couleur des différent bouton
+* Fonction qui permet le changement de couleur des différents bouton
 * En l'occurence elle permet de les griser et les rendre non cliquable
  */
 
@@ -379,7 +379,7 @@ function toggle_button ( id: string, texte: string) {
 }
 
 /*
-* Fonction qui permet le changement de couleur des différent bouton
+* Fonction qui permet le changement de couleur des différents bouton
 * En l'occurence elle permet de les rendre rouge et cliquable
  */
 

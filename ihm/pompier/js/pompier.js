@@ -14,7 +14,6 @@ let all_police_car_arrived = false;
 let nbTruck;
 let leftdis = 10;
 let checkarrive = 0;
-let checkdisp;
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePomp").style.display = "none";
@@ -35,10 +34,16 @@ function Main() {
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => { ws.close(); }).then(() => { window.close(); });
         }
+        /*
+        * Appeler lorsque la crise démarre
+         */
         if (dataObject.state === "crisis_started") {
             crisis_started = true;
             Swal.close();
         }
+        /*
+        * Appeler lorsque les policiers ont proposé une route pour les pompiers, permet au pompier de valider ou non la route
+         */
         if (dataObject.status === "valid_routeP") {
             Swal.fire({
                 title: 'Les pompiers veulent prendre la route ' + dataObject.route,
@@ -67,6 +72,9 @@ function Main() {
             });
             return 0;
         }
+        /*
+        * Appeler lorsque les policiers ont proposé une route pour eux même permet au pompier de valider ou non la route
+         */
         if (dataObject.status === "valid_route") {
             Swal.fire({
                 title: 'Les policiers veulent prendre la route ' + dataObject.route,
@@ -94,28 +102,41 @@ function Main() {
             });
             return 0;
         }
+        /*
+        * Permet l'appel de la fonction générant le nombre de bouton nécessaire
+         */
         if (dataObject.status === "route_policier_choisis") {
-            console.log("azasd");
             for (let i = 0; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }
         }
+        /*
+        *  Appeler lorsque les policiers ont validé leur nombre de véhicules
+        *  */
         if (dataObject.status === "policier_car_ok") {
             Swal.close();
             policier_car_ok = true;
         }
+        /*
+        * Vérifie si tout les véhicules de police sont arrivé
+         */
         if (dataObject.status === "all_police_car_arrived") {
             Swal.close();
             all_police_car_arrived = true;
         }
     };
     ws.onopen = function () {
-        ws.send(JSON.stringify({ message: "Bonjour Java" })); //Envoie de ce message au serveur Java WebSocket (voir console NetBeans)
+        ws.send(JSON.stringify({ message: "Bonjour Java" })); //Envoi de ce message au serveur Java WebSocket (voir console NetBeans)
     };
     ws.onclose = function (e) {
-        console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
+        console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On récupère le code d'extinction du serveur
     };
 }
+/*
+* Représenter par le bouton "Pompier" central
+* Ce bouton permet au policier, lorsqu'il est presser, de se connecter au FSC
+* Si les policiers ne sont pas encore connecté ça les met en attente
+* */
 function btnPompier() {
     ws.send(JSON.stringify({
         id: "pompier",
@@ -148,6 +169,10 @@ function btnPompier() {
         });
     });
 }
+/*
+* Représenter par le bouton "Nombre de véhicule des pompiers"
+* Ce bouton permet de selectionner le nombre de véhicule à envoyer
+ */
 function idlePompier() {
     Swal.fire({
         title: 'Choisissez le nombre de vehicules',
@@ -165,7 +190,6 @@ function idlePompier() {
     }).then((nbCamions) => {
         nbTruck = nbCamions.value - 1;
         toggle_button("idlePomp", nbCamions.value + "  véhicule disponible");
-        console.log(nbCamions.value);
         ws.send(JSON.stringify({
             function: "state_truck",
             data: nbCamions.value
@@ -205,6 +229,9 @@ function idlePompier() {
         }
     });
 }
+/*
+* Cette fonction permet la création des différents button dispatched et arrivé
+ */
 function buttonNbPompier(e) {
     let x = document.createElement("button");
     x.id = ("button_dispatched" + e);
@@ -212,7 +239,6 @@ function buttonNbPompier(e) {
     document.body.appendChild(x);
     document.getElementById(x.id).onclick = function () { dispaffi(x.id); };
     let myButton = document.getElementById(x.id);
-    console.log(myButton.id);
     myButton.textContent = "Dispatcher #" + e;
     myButton.style.alignItems = "center";
     myButton.style.color = "white";
@@ -238,7 +264,6 @@ function buttonNbPompier(e) {
     document.body.appendChild(y);
     document.getElementById(y.id).onclick = function () { vireraffi(y.id); };
     let myButtonAri = document.getElementById(y.id);
-    console.log(myButtonAri);
     myButtonAri.style.display = "none";
     myButtonAri.textContent = "Arrivé #" + e;
     myButtonAri.style.alignItems = "center";
@@ -263,6 +288,10 @@ function buttonNbPompier(e) {
     document.getElementById("updcrise").textContent = "Crise entrain d\'être résolus";
     document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
+/*
+* Cette fonction est appelée lors de l'appuie sur les boutons "dispatcher  #"
+* Elle permet de changer l'affichage des boutons dispatcher
+*/
 function dispaffi(id) {
     let a = id.slice(-1);
     toggle_button(id, "Vehicule Dispatcher");
@@ -274,10 +303,13 @@ function dispaffi(id) {
         data: a,
     }));
 }
+/*
+* Cette fonction est appelée lors de l'appuie sur les boutons "arrivé  #"
+* Elle permet de changer l'affichage des boutons arrivé
+*/
 function vireraffi(id) {
     toggle_button(id, "Vehicule arrivé");
     checkarrive += 1;
-    console.log(checkarrive);
     ws.send(JSON.stringify({
         function: "arrived_truck_fireman",
         data: id.slice(-1),
@@ -308,9 +340,12 @@ function vireraffi(id) {
         }
     }
 }
+/*
+* Cette fonction est appelée lors de l'appuie sur les "shutdown"
+* Elle permet au serveur de se fermer lors de l'appuie sur le dit bouton
+*/
 function ShutdownServeur() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("Shutdown marche");
         ws.send(JSON.stringify({
             function: "shutdown"
         }));
@@ -319,9 +354,10 @@ function ShutdownServeur() {
         window.close();
     });
 }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+/*
+* Fonction qui permet le changement de couleur des différents bouton
+* En l'occurence elle permet de les griser et les rendre non cliquable
+ */
 function toggle_button(id, texte) {
     let myButton = document.getElementById(id);
     myButton.disabled = true;
@@ -329,11 +365,21 @@ function toggle_button(id, texte) {
     myButton.style.background = "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(122, 123, 137,1) 15%, rgb(73, 74, 83) 85%, rgba(0,0,0,1) 100%)";
     myButton.textContent = texte;
 }
+/*
+* Fonction qui permet le changement de couleur des différents bouton
+* En l'occurence elle permet de les rendre rouge et cliquable
+ */
 function toggle_buttonPom(id, texte) {
     let myButton = document.getElementById(id);
     myButton.disabled = false;
     myButton.style.cursor = "pointer";
     myButton.style.background = "linear-gradient(90deg, rgba(36,0,0,1) 0%, rgba(200,6,6,1) 25%, rgba(200,6,6,1) 75%, rgba(36,0,0,1) 100%)";
     myButton.textContent = texte;
+}
+/*
+* Fonction permettant de faire une pause durant une durée souhaiter
+*/
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 //# sourceMappingURL=pompier.js.map

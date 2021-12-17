@@ -85,11 +85,7 @@ public class WebSocket_Server {
                             }
                         }
                         break;
-                    case "routeChoisisPol":
-
-                        break;
                     case "routePolicier":
-                        System.out.println("Route Policier");
                         _bCMS.route_for_police_vehicles();
                         javax.json.JsonObject route = javax.json.Json.createObjectBuilder().add("status", "valid_route").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {
@@ -99,7 +95,6 @@ public class WebSocket_Server {
                         }
                         break;
                     case "routePompier":
-                        System.out.println("Route Pompier");
                         _bCMS.route_for_fire_trucks();
                         javax.json.JsonObject routeP = javax.json.Json.createObjectBuilder().add("status", "valid_routeP").add("route", objarr.getString("data")).build();
                         for (javax.websocket.Session usr : sessions) {

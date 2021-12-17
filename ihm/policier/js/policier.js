@@ -42,7 +42,6 @@ function Main() {
         let data = e.data.toString();
         let dataObject = JSON.parse(data);
         if (dataObject.error === "already_exist") {
-            console.log("plus de place disponible ");
             //document.getElementsByClassName("btnall")[0].remove();
             Swal.fire({
                 icon: 'error',
@@ -79,7 +78,7 @@ function Main() {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Problème de Route',
-                    text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
+                    text: 'Plus aucune route n\'est disponble, une par défaut a été sélectionnée !'
                 });
                 if (route_fireman) {
                     for (let i = 1; i <= nbCar; i++) {
@@ -112,7 +111,7 @@ function Main() {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Problème de Route',
-                    text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
+                    text: 'Plus aucune route n\'est disponble, une par défaut a été sélectionnée !'
                 });
                 route_fireman = true;
                 ws.send(JSON.stringify({
@@ -125,14 +124,14 @@ function Main() {
                 toggle_buttonPom("routePomp", pp);
             }
             if (dataObject.route === "1") {
-                toggle_button("routePoli", "La " + dataObject.route + "ere route a était choisis par les policiers");
-                pc = "La " + dataObject.route + "ere route a était choisis par les policiers";
+                toggle_button("routePoli", "La " + dataObject.route + "ere route a été choisi par les policiers");
+                pc = "La " + dataObject.route + "ere route a été choisi par les policiers";
             }
             else {
-                toggle_button("routePoli", "La " + dataObject.route + "eme route a était choisis par les policiers");
-                pc = "La " + dataObject.route + "eme route a était choisis par les policiers";
+                toggle_button("routePoli", "La " + dataObject.route + "eme route a été choisi par les policiers");
+                pc = "La " + dataObject.route + "eme route a été choisi par les policiers";
             }
-            Swal.fire('Route validé!', 'La route a était validé!', 'success');
+            Swal.fire('Route validée !', 'La route a été validée !', 'success');
             if (route_fireman) {
                 for (let i = 1; i <= nbCar; i++) {
                     buttonNbPoliciers(i);
@@ -144,14 +143,14 @@ function Main() {
                 toggle_buttonPol("routePoli", pc);
             }
             if (dataObject.route === "1") {
-                toggle_button("routePomp", "La " + dataObject.route + "ere route a était choisis par les pompiers");
-                pp = "La " + dataObject.route + "ere route a était choisis par les pompiers";
+                toggle_button("routePomp", "La " + dataObject.route + "ere route a été choisi par les pompiers");
+                pp = "La " + dataObject.route + "ere route a été choisi par les pompiers";
             }
             else {
-                toggle_button("routePomp", "La " + dataObject.route + "eme route a était choisis par les pompiers");
-                pp = "La " + dataObject.route + "eme route a était choisis par les pompiers";
+                toggle_button("routePomp", "La " + dataObject.route + "eme route a été choisi par les pompiers");
+                pp = "La " + dataObject.route + "eme route a été choisi par les pompiers";
             }
-            Swal.fire('Route validé!', 'La route a était validé pompier!', 'success');
+            Swal.fire('Route validé!', 'La route a été validée pompier!', 'success');
             route_fireman = true;
             ws.send(JSON.stringify({
                 function: "route_choisis",
@@ -171,7 +170,7 @@ function Main() {
     };
     ws.onclose = function (e) {
         return __awaiter(this, void 0, void 0, function* () {
-            Swal.fire('Le serveur a été fermé, la fenetre va se fermer dans 5 secondes');
+            Swal.fire('Le serveur a été fermé, la fenètre va se fermer dans 5 secondes');
             yield sleep(5000);
             window.close();
             console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
@@ -212,7 +211,6 @@ function btnPolicier() {
     });
 }
 function idlePolicier() {
-    console.log("idle Policier fonctionne");
     Swal.fire({
         title: 'Choisissez le nombre de vehicules',
         icon: 'question',
@@ -232,9 +230,6 @@ function idlePolicier() {
             function: "state_car",
             data: nbVoitures.value
         }));
-        ws.send(JSON.stringify({
-            function: "routeChoisisPol",
-        }));
         if (!fireman_truck_ok) {
             Swal.fire({
                 title: 'En attente',
@@ -251,7 +246,7 @@ function idlePolicier() {
                 Swal.fire({
                     toast: true,
                     icon: 'success',
-                    title: 'Les pompiers on envoyer le véhicule',
+                    title: 'Les pompiers ont envoyé le véhicule',
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,

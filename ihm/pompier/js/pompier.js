@@ -27,7 +27,6 @@ function Main() {
         let data = e.data.toString();
         let dataObject = JSON.parse(data);
         if (dataObject.error === "already_exist") {
-            console.log("plus de place disponible ");
             //document.getElementsByClassName("btnall")[0].remove();
             Swal.fire({
                 icon: 'error',
@@ -46,12 +45,12 @@ function Main() {
                 showCancelButton: false,
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                confirmButtonText: 'Route confirmer',
-                denyButtonText: `Route non confirmer`,
+                confirmButtonText: 'Confirmer la route',
+                denyButtonText: `Refuser la route`,
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    Swal.fire('Route confirmer!', '', 'success');
+                    Swal.fire('Route confirmée !', '', 'success');
                     ws.send(JSON.stringify({
                         function: "agree_route_pompier",
                         data: dataObject.route
@@ -74,18 +73,18 @@ function Main() {
                 showCancelButton: false,
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                confirmButtonText: 'Route confirmer',
-                denyButtonText: `Route non confirmer`,
+                confirmButtonText: 'Confirmer la route',
+                denyButtonText: `Refuser la route`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire('Route confirmer!', '', 'success');
+                    Swal.fire('Route confirmée !', '', 'success');
                     ws.send(JSON.stringify({
                         function: "agree_route_policier",
                         data: dataObject.route
                     }));
                 }
                 else if (result.isDenied) {
-                    Swal.fire('Route non confirmer', '', 'error');
+                    Swal.fire('Route non confirmée', '', 'error');
                     ws.send(JSON.stringify({
                         function: "disagree_route_policier",
                         data: dataObject.route
@@ -116,7 +115,6 @@ function Main() {
     };
 }
 function btnPompier() {
-    console.log("Je suis un pompier");
     ws.send(JSON.stringify({
         id: "pompier",
     }));
@@ -150,7 +148,6 @@ function btnPompier() {
     });
 }
 function idlePompier() {
-    console.log("idle pompier fonctionne");
     Swal.fire({
         title: 'Choisissez le nombre de vehicules',
         icon: 'question',
@@ -186,7 +183,7 @@ function idlePompier() {
                 Swal.fire({
                     toast: true,
                     icon: 'success',
-                    title: 'Les policiers ont envoyer le véhicule',
+                    title: 'Les policiers ont envoyé le véhicule',
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,

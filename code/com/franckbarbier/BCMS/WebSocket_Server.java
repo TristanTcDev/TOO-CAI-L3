@@ -5,6 +5,8 @@
  */
 package com.franckbarbier.BCMS;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author arnaud
@@ -171,7 +173,6 @@ public class WebSocket_Server {
                             System.out.println(BCMS.Status.Dispatched + ": " + s);
                         }
                         break;
-
                     case "route_poli_choisis":
                         javax.json.JsonObject routepolichoisis = javax.json.Json.createObjectBuilder().add("status", "route_policier_choisis").build();
                         for (javax.websocket.Session usr : sessions) {

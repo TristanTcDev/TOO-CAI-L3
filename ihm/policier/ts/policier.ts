@@ -367,8 +367,6 @@ function vireraffi(id: string) {
             function: "all_police_car_arrived"
         }));
         if(!all_fireman_truck_arrived){
-            document.getElementById("updcrise").textContent = "Crise résolus";
-            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
             Swal.fire({
                 title: 'En attente',
                 html: 'Attente de l\'arrivée de tous les véhicules des Pompiers',
@@ -377,7 +375,10 @@ function vireraffi(id: string) {
                 didOpen: () => {
                     Swal.showLoading()
                 },
-            })
+            }).then(() => {
+                document.getElementById("updcrise").textContent = "Crise résolus";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+            });
         }
         else {
             document.getElementById("updcrise").textContent = "Crise résolus";

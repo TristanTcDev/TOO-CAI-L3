@@ -5,8 +5,6 @@
  */
 package com.franckbarbier.BCMS;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author arnaud

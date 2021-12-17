@@ -1,7 +1,6 @@
 const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
 let leftdis: number = 10;
 let crisis_started: boolean = false;
-let route_fireman = false;
 let route_policeman = false;
 let fireman_truck_ok = false;
 let all_fireman_truck_arrived = false;
@@ -75,13 +74,12 @@ function Main(){
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a été sélectionnée !'
                 })
-
-                if (route_fireman) {
-                    for (let i = 1; i <= nbCar; i++) {
+                ws.send(JSON.stringify({
+                    function: "route_poli_choisis",
+                }));
+                    for (let i = 0; i <= nbCar; i++) {
                         buttonNbPoliciers(i);
                     }
-                }
-
             }
         }
         if(dataObject.status==="disagree_routeP"){
@@ -110,10 +108,7 @@ function Main(){
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a été sélectionnée !'
                 })
-                route_fireman = true;
-                ws.send(JSON.stringify({
-                    function: "route_choisis",
-                }));
+                document.getElementById("routePoli").style.display = "block";
             }
         }
 
@@ -134,11 +129,13 @@ function Main(){
                 'La route a été validée !',
                 'success'
             )
-            if (route_fireman) {
-                for (let i = 1; i <= nbCar; i++) {
+            ws.send(JSON.stringify({
+                function: "route_poli_choisis",
+            }));
+                for (let i = 0; i <= nbCar; i++) {
+                    console.log(i);
                     buttonNbPoliciers(i);
                 }
-            }
         }
 
         if(dataObject.status==="agree_routeP"){
@@ -158,10 +155,7 @@ function Main(){
                 'La route a été validée pompier!',
                 'success'
             )
-            route_fireman = true;
-            ws.send(JSON.stringify({
-                function: "route_choisis",
-            }));
+            document.getElementById("routePoli").style.display = "block";
         }
 
         if(dataObject.status==="fireman_truck_ok"){
@@ -234,7 +228,7 @@ function idlePolicier() {
         },
         inputValue: 1
     }).then((nbVoitures) => {
-        nbCar = nbVoitures.value;
+        nbCar = nbVoitures.value - 1;
         toggle_button("idlePoli", nbVoitures.value + "  véhicule disponible");
         console.log(nbVoitures.value);
         ws.send(JSON.stringify({
@@ -256,7 +250,6 @@ function idlePolicier() {
                 }));
                 document.getElementById("updcrise").textContent = "Crise pris en compte";
                 document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
-                document.getElementById("routePoli").style.display = "block";
                 document.getElementById("routePomp").style.display = "block";
                 Swal.fire({
                     toast: true,
@@ -275,7 +268,6 @@ function idlePolicier() {
         else {
             document.getElementById("updcrise").textContent = "Crise pris en compte";
             document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
-            document.getElementById("routePoli").style.display = "block";
             document.getElementById("routePomp").style.display = "block";
         }
     })
@@ -358,11 +350,12 @@ function vireraffi(id: string) {
     toggle_button(id, "Vehicule arrivé");
     console.log(id);
     checkarrive += 1;
+    console.log(checkarrive);
     ws.send(JSON.stringify({
         function: "arrived_car_police",
         data: id.slice(-1),
     }));
-    if (checkarrive >= nbCar) {
+    if (checkarrive > nbCar) {
         ws.send(JSON.stringify({
             function: "all_police_car_arrived"
         }));

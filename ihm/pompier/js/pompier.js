@@ -14,6 +14,7 @@ let all_police_car_arrived = false;
 let nbTruck;
 let leftdis = 10;
 let checkarrive = 0;
+let checkdisp;
 window.addEventListener('load', Main);
 window.onload = function () {
     document.getElementById("idlePomp").style.display = "none";
@@ -93,8 +94,9 @@ function Main() {
             });
             return 0;
         }
-        if (dataObject.status === "route_pompiers_choisis") {
-            for (let i = 1; i <= nbTruck; i++) {
+        if (dataObject.status === "route_policier_choisis") {
+            console.log("azasd");
+            for (let i = 0; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }
         }
@@ -129,7 +131,6 @@ function btnPompier() {
     }).then(() => {
         toggle_button("pompier", "Pompier");
         document.getElementById("idlePomp").style.display = "block";
-        document.getElementById("ShutdownServ").style.display = "block";
         ws.send(JSON.stringify({
             function: "pompier_connexion_request",
         }));
@@ -162,7 +163,7 @@ function idlePompier() {
         },
         inputValue: 1
     }).then((nbCamions) => {
-        nbTruck = nbCamions.value;
+        nbTruck = nbCamions.value - 1;
         toggle_button("idlePomp", nbCamions.value + "  véhicule disponible");
         console.log(nbCamions.value);
         ws.send(JSON.stringify({
@@ -281,7 +282,7 @@ function vireraffi(id) {
         function: "arrived_truck_fireman",
         data: id.slice(-1),
     }));
-    if (checkarrive >= nbTruck) {
+    if (checkarrive > nbTruck) {
         ws.send(JSON.stringify({
             function: "all_fireman_truck_arrived"
         }));
@@ -297,11 +298,13 @@ function vireraffi(id) {
             }).then(() => {
                 document.getElementById("updcrise").textContent = "Crise résolus";
                 document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+                document.getElementById("ShutdownServ").style.display = "block";
             });
         }
         else {
             document.getElementById("updcrise").textContent = "Crise résolus";
             document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+            document.getElementById("ShutdownServ").style.display = "block";
         }
     }
 }

@@ -6,6 +6,8 @@ let nbTruck: number;
 let leftdis: number = 10;
 let checkarrive: number = 0;
 
+let checkdisp: boolean;
+
 declare const Swal:any;
 
 window.addEventListener('load', Main);
@@ -86,8 +88,9 @@ function Main(){
             })
             return 0;
         }
-        if (dataObject.status === "route_pompiers_choisis") {
-            for (let i = 1; i <= nbTruck; i++) {
+        if (dataObject.status === "route_policier_choisis") {
+            console.log("azasd");
+            for (let i = 0; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }
         }
@@ -159,7 +162,7 @@ function idlePompier() {
         },
         inputValue: 1
     }).then((nbCamions) => {
-        nbTruck = nbCamions.value;
+        nbTruck = nbCamions.value - 1;
         toggle_button("idlePomp", nbCamions.value + "  véhicule disponible")
         console.log(nbCamions.value);
         ws.send(JSON.stringify({
@@ -285,7 +288,7 @@ function vireraffi(id: string) {
         function: "arrived_truck_fireman",
         data: id.slice(-1),
     }));
-    if (checkarrive >= nbTruck) {
+    if (checkarrive > nbTruck) {
         ws.send(JSON.stringify({
             function: "all_fireman_truck_arrived"
         }));

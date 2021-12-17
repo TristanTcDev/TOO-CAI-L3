@@ -52,7 +52,7 @@ function Main(){
             Swal.close();
         }
         /*
-        * Appeler si les pompiers on refuser la route que les policiers était censé prendre
+        * Appeler si les pompiers ont refusé la route que les policiers était censé prendre
          */
         if(dataObject.status==="disagree_route"){
             console.log(dataObject.route);
@@ -89,7 +89,7 @@ function Main(){
             }
         }
         /*
-        * Appeler si les pompiers on refuser la route proposer par les policiers qu'ils étaient censé prendre
+        * Appeler si les pompiers ont refusé la route proposer par les policiers qu'ils étaient censé prendre
          */
         if(dataObject.status==="disagree_routeP"){
             console.log(dataObject.route);
@@ -121,7 +121,7 @@ function Main(){
             }
         }
         /*
-        * Appeler si les pompiers on accepter la route proposer pour les policiers
+        * Appeler si les pompiers ont accepté la route proposer pour les policiers
          */
         if(dataObject.status==="agree_route"){
             if (checkpomp === false) {
@@ -150,7 +150,7 @@ function Main(){
         }
 
         /*
-        * Appeler si les pompiers on accepter la route proposer pour eux même
+        * Appeler si les pompiers ont accepté la route proposer pour eux même
          */
         if(dataObject.status==="agree_routeP"){
             if (checkpol === false) {
@@ -173,7 +173,7 @@ function Main(){
         }
 
         /*
-        *  Appeler lorsque les pompiers on validé leur nombre de véhicule
+        *  Appeler lorsque les pompiers ont validé leur nombre de véhicules
         *  */
         if(dataObject.status==="fireman_truck_ok"){
             Swal.close();
@@ -181,7 +181,7 @@ function Main(){
         }
 
         /*
-        * Vérifie si tout les véhicule de police sont arrivé
+        * Vérifie si tous les véhicules de police sont arrivé
          */
         if(dataObject.status==="all_fireman_truck_arrived"){
             Swal.close();
@@ -202,8 +202,8 @@ function Main(){
 
 /*
 * Représenter par le bouton "Policier" central
-* Ce bouton permet au policier, lorsqu'il est presser, de ce connecter au PSC
-* Si les pompiers ne sont pas encore connecter ça les met en attente
+* Ce bouton permet au policier, lorsqu'il est pressé, de se connecter au PSC
+* Si les pompiers ne sont pas encore connecté alors ça les mets en attente
 * */
 
 function btnPolicier(){
@@ -241,8 +241,8 @@ function btnPolicier(){
 }
 
 /*
-* Représenter par le bouton "Nombre de véhicule des policiers"
-* Ce bouton permet de selectionner le nombre de véhicule à envoyer
+* Représenter par le bouton "Nombre de véhicules des policiers"
+* Ce bouton permet de selectionner le nombre de véhicules à envoyer
  */
 
 function idlePolicier() {
@@ -305,7 +305,7 @@ function idlePolicier() {
     })
 }
 /*
-* Cette fonction permet la création des différent button dispatched et arrivé
+* Cette fonction permet la création des différents button dispatched et arrivé
  */
 
 function buttonNbPoliciers(e) {
@@ -370,7 +370,7 @@ function buttonNbPoliciers(e) {
 }
 
 /*
-* Cette fonction est appeler lors de l'appuie sur les boutons "dispatcher  #"
+* Cette fonction est appelée lors de l'appuie sur les boutons "dispatcher  #"
 * Elle permet de changer l'affichage des boutons dispatcher
 */
 
@@ -387,7 +387,7 @@ function dispaffi(id: string) {
 }
 
 /*
-* Cette fonction est appeler lors de l'appuie sur les boutons "arrivé  #"
+* Cette fonction est appelée lors de l'appuie sur les boutons "arrivé  #"
 * Elle permet de changer l'affichage des boutons arrivé
 */
 
@@ -426,7 +426,7 @@ function vireraffi(id: string) {
 }
 
 /*
-* Permet le choix de la route à proposer au pompiers pour les policiers
+* Permet le choix de la route à proposer aux pompiers pour les policiers
  */
 
 function routePolicier() {
@@ -456,7 +456,7 @@ function routePolicier() {
 
 }
 /*
-* Permet le choix de la route à proposer au pompiers pour les pompiers
+* Permet le choix de la route à proposer aux pompiers pour les pompiers
  */
 
 function routePompier() {
@@ -486,7 +486,7 @@ function routePompier() {
 }
 
 /*
-* Fonction qui permet le changement de couleur des différent bouton
+* Fonction qui permet le changement de couleur des différents bouton
 * En l'occurence elle permet de les griser et les rendre non cliquable
  */
 
@@ -499,7 +499,7 @@ function toggle_button ( id: string, texte: string) {
 }
 
 /*
-* Fonction qui permet le changement de couleur des différent bouton
+* Fonction qui permet le changement de couleur des différents bouton
 * En l'occurence elle permet de les rendre rouge et cliquable
  */
 
@@ -512,7 +512,7 @@ function toggle_buttonPom ( id: string, texte: string) {
 }
 
 /*
-* Fonction qui permet le changement de couleur des différent bouton
+* Fonction qui permet le changement de couleur des différents bouton
 * En l'occurence elle permet de les rendre bleu et cliquable
  */
 

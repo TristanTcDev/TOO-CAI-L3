@@ -184,7 +184,7 @@ function idlePompier() {
                 Swal.fire({
                     toast: true,
                     icon: 'success',
-                    title: 'Les policiers on envoyer le véhicule',
+                    title: 'Les policiers ont envoyer le véhicule',
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,
@@ -195,6 +195,8 @@ function idlePompier() {
                 })
             })
         }
+        document.getElementById("updcrise").textContent = "Crise pris en compte";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
     })
 }
 
@@ -256,6 +258,9 @@ function buttonNbPompier(e) {
         myButtonAri.style.cursor = "pointer";
 
         leftdis += 7;
+
+        document.getElementById("updcrise").textContent = "Crise entrain d\'être résolus";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 
 function dispaffi(id: string) {
@@ -289,6 +294,8 @@ function vireraffi(id: string) {
                 },
             })
         }
+        document.getElementById("updcrise").textContent = "Crise résolus";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
     }
 }
 
@@ -321,3 +328,4 @@ function toggle_buttonPom ( id: string, texte: string) {
     myButton.style.background = "linear-gradient(90deg, rgba(36,0,0,1) 0%, rgba(200,6,6,1) 25%, rgba(200,6,6,1) 75%, rgba(36,0,0,1) 100%)";
     myButton.textContent = texte;
 }
+

@@ -189,9 +189,6 @@ public class WebSocket_Server {
             if (_sessions.size() == 2 && _bCMS == null) {
                 _crisis_start(session);
             }
-            //System.out.println(_bCMS._BCMS_state_machine.current_state());
-            //java.util.Set<javax.websocket.Session> sessions = session.getOpenSessions();
-            //System.out.println("Sessions ouvertes: " + sessions.size());
         }
 
         @javax.websocket.OnOpen

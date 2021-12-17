@@ -186,7 +186,7 @@ function idlePompier() {
                 Swal.fire({
                     toast: true,
                     icon: 'success',
-                    title: 'Les policiers on envoyer le véhicule',
+                    title: 'Les policiers ont envoyer le véhicule',
                     position: 'top-end',
                     showConfirmButton: false,
                     timer: 3000,
@@ -197,6 +197,8 @@ function idlePompier() {
                 });
             });
         }
+        document.getElementById("updcrise").textContent = "Crise pris en compte";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
     });
 }
 function buttonNbPompier(e) {
@@ -254,6 +256,8 @@ function buttonNbPompier(e) {
     myButtonAri.style.padding = "3px";
     myButtonAri.style.cursor = "pointer";
     leftdis += 7;
+    document.getElementById("updcrise").textContent = "Crise entraind d\'être résolus";
+    document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 function dispaffi(id) {
     let a = id.slice(-1);
@@ -285,6 +289,8 @@ function vireraffi(id) {
                 },
             });
         }
+        document.getElementById("updcrise").textContent = "Crise résolus";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
     }
 }
 function ShutdownServeur() {

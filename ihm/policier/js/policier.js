@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
 let leftdis = 10;
 let crisis_started = false;
+let route_fireman = false;
+let route_policeman = false;
 let fireman_truck_ok = false;
 let all_fireman_truck_arrived = false;
 let checkpomp = false;
@@ -79,8 +81,10 @@ function Main() {
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
                 });
-                for (let i = 1; i <= nbCar; i++) {
-                    buttonNbPoliciers(i);
+                if (route_fireman) {
+                    for (let i = 1; i <= nbCar; i++) {
+                        buttonNbPoliciers(i);
+                    }
                 }
             }
         }
@@ -110,6 +114,7 @@ function Main() {
                     title: 'Problème de Route',
                     text: 'Plus aucune route n\'est disponble, une par défaut a était sélectionner !'
                 });
+                route_fireman = true;
                 ws.send(JSON.stringify({
                     function: "route_choisis",
                 }));
@@ -128,8 +133,10 @@ function Main() {
                 pc = "La " + dataObject.route + "eme route a était choisis par les policiers";
             }
             Swal.fire('Route validé!', 'La route a était validé!', 'success');
-            for (let i = 1; i <= nbCar; i++) {
-                buttonNbPoliciers(i);
+            if (route_fireman) {
+                for (let i = 1; i <= nbCar; i++) {
+                    buttonNbPoliciers(i);
+                }
             }
         }
         if (dataObject.status === "agree_routeP") {
@@ -145,6 +152,7 @@ function Main() {
                 pp = "La " + dataObject.route + "eme route a était choisis par les pompiers";
             }
             Swal.fire('Route validé!', 'La route a était validé pompier!', 'success');
+            route_fireman = true;
             ws.send(JSON.stringify({
                 function: "route_choisis",
             }));
@@ -227,8 +235,6 @@ function idlePolicier() {
         ws.send(JSON.stringify({
             function: "routeChoisisPol",
         }));
-        document.getElementById("routePoli").style.display = "block";
-        document.getElementById("routePomp").style.display = "block";
         if (!fireman_truck_ok) {
             Swal.fire({
                 title: 'En attente',
@@ -256,6 +262,10 @@ function idlePolicier() {
                 });
             });
         }
+        document.getElementById("routePoli").style.display = "block";
+        document.getElementById("routePomp").style.display = "block";
+        document.getElementById("updcrise").textContent = "Crise pris en compte";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#FF8C00";
     });
 }
 function buttonNbPoliciers(e) {
@@ -311,6 +321,8 @@ function buttonNbPoliciers(e) {
     myButtonAri.style.padding = "3px";
     myButtonAri.style.cursor = "pointer";
     leftdis += 7;
+    document.getElementById("updcrise").textContent = "Crise entraind d\'être résolus";
+    document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 function dispaffi(id) {
     let a = id.slice(-1);
@@ -338,6 +350,8 @@ function vireraffi(id) {
                 },
             });
         }
+        document.getElementById("updcrise").textContent = "Crise résolus";
+        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
     }
 }
 function routePolicier() {

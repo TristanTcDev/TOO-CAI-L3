@@ -345,12 +345,20 @@ function dispaffi(id: string) {
     let myButton = <HTMLInputElement>document.getElementById("button_arrive" + a);
     myButton.style.display = "block";
     toggle_buttonPol("button_arrive" + a, "Arrivé #" + a);
+    ws.send(JSON.stringify({
+        function: "dispatch_car_police",
+        data: a,
+    }));
 }
 
 function vireraffi(id: string) {
     toggle_button(id, "Vehicule arrivé");
     console.log(id);
     checkarrive += 1;
+    ws.send(JSON.stringify({
+        function: "arrived_car_police",
+        data: id.slice(-1),
+    }));
     if (checkarrive >= nbCar) {
         ws.send(JSON.stringify({
             function: "all_police_car_arrived"

@@ -152,8 +152,26 @@ public class WebSocket_Server {
                         }
                         latch.countDown();
                         break;
-                    case "dispatchPompier":
-                        _bCMS.fire_truck_dispatched("Fire Truck #" + Integer.parseInt(objarr.getString("data")));
+                    case "dispatch_truck_fireman":
+                        _bCMS.fire_truck_dispatched("Fire truck #" + objarr.getString("data"));
+                        for (String s : _bCMS.get_fire_trucks(BCMS.Status.Dispatched)) {
+                            System.out.println(BCMS.Status.Dispatched + ": " + s);
+                        }
+                        break;
+                    case "dispatch_car_police":
+                        _bCMS.police_vehicle_dispatched("Police vehicle #" + objarr.getString("data"));
+                        for (String s : _bCMS.get_fire_trucks(BCMS.Status.Dispatched)) {
+                            System.out.println(BCMS.Status.Dispatched + ": " + s);
+                        }
+                        break;
+                    case "arrived_truck_fireman":
+                        _bCMS.fire_truck_arrived("Fire truck #" + objarr.getString("data"));
+                        for (String s : _bCMS.get_fire_trucks(BCMS.Status.Dispatched)) {
+                            System.out.println(BCMS.Status.Dispatched + ": " + s);
+                        }
+                        break;
+                    case "arrived_car_police":
+                        _bCMS.police_vehicle_arrived("Police vehicle #" + objarr.getString("data"));
                         for (String s : _bCMS.get_fire_trucks(BCMS.Status.Dispatched)) {
                             System.out.println(BCMS.Status.Dispatched + ": " + s);
                         }

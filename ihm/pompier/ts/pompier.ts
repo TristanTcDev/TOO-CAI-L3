@@ -270,7 +270,7 @@ function dispaffi(id: string) {
     myButton.style.display = "block";
     toggle_buttonPom("button_arrive" + a, "Arrivé #" + a);
     ws.send(JSON.stringify({
-        function: "dispatchPompier",
+        function: "dispatch_truck_fireman",
         data: a,
     }));
 }
@@ -279,6 +279,10 @@ function vireraffi(id: string) {
     toggle_button(id, "Vehicule arrivé");
     checkarrive += 1;
     console.log(checkarrive);
+    ws.send(JSON.stringify({
+        function: "arrived_truck_fireman",
+        data: id.slice(-1),
+    }));
     if (checkarrive >= nbTruck) {
         ws.send(JSON.stringify({
             function: "all_fireman_truck_arrived"

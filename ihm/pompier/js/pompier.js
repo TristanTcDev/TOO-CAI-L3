@@ -256,7 +256,7 @@ function buttonNbPompier(e) {
     myButtonAri.style.padding = "3px";
     myButtonAri.style.cursor = "pointer";
     leftdis += 7;
-    document.getElementById("updcrise").textContent = "Crise entraind d\'être résolus";
+    document.getElementById("updcrise").textContent = "Crise entrain d\'être résolus";
     document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 function dispaffi(id) {
@@ -266,7 +266,7 @@ function dispaffi(id) {
     myButton.style.display = "block";
     toggle_buttonPom("button_arrive" + a, "Arrivé #" + a);
     ws.send(JSON.stringify({
-        function: "dispatchPompier",
+        function: "dispatch_truck_fireman",
         data: a,
     }));
 }
@@ -274,6 +274,10 @@ function vireraffi(id) {
     toggle_button(id, "Vehicule arrivé");
     checkarrive += 1;
     console.log(checkarrive);
+    ws.send(JSON.stringify({
+        function: "arrived_truck_fireman",
+        data: id.slice(-1),
+    }));
     if (checkarrive >= nbTruck) {
         ws.send(JSON.stringify({
             function: "all_fireman_truck_arrived"

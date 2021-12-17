@@ -294,10 +294,15 @@ function vireraffi(id) {
                 didOpen: () => {
                     Swal.showLoading();
                 },
+            }).then(() => {
+                document.getElementById("updcrise").textContent = "Crise résolus";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
             });
         }
-        document.getElementById("updcrise").textContent = "Crise résolus";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        else {
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        }
     }
 }
 function ShutdownServeur() {

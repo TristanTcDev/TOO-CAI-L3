@@ -324,7 +324,7 @@ function buttonNbPoliciers(e) {
     myButtonAri.style.padding = "3px";
     myButtonAri.style.cursor = "pointer";
     leftdis += 7;
-    document.getElementById("updcrise").textContent = "Crise entraind d\'être résolus";
+    document.getElementById("updcrise").textContent = "Crise entrain d\'être résolus";
     document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 function dispaffi(id) {
@@ -359,10 +359,15 @@ function vireraffi(id) {
                 didOpen: () => {
                     Swal.showLoading();
                 },
+            }).then(() => {
+                document.getElementById("updcrise").textContent = "Crise résolus";
+                document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
             });
         }
-        document.getElementById("updcrise").textContent = "Crise résolus";
-        document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        else {
+            document.getElementById("updcrise").textContent = "Crise résolus";
+            document.getElementById("CriseBCMS").style.backgroundColor = "#32CD32";
+        }
     }
 }
 function routePolicier() {

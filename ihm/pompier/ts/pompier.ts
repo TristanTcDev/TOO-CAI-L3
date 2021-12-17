@@ -1,6 +1,7 @@
 const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
 let crisis_started: boolean = false;
 let policier_car_ok = false;
+let all_police_car_arrived = false;
 let nbTruck: number;
 let leftdis: number = 10;
 let checkarrive: number = 0;
@@ -70,7 +71,6 @@ function Main(){
                 confirmButtonText: 'Route confirmer',
                 denyButtonText: `Route non confirmer`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire('Route confirmer!', '', 'success')
                     ws.send(JSON.stringify( {
@@ -96,6 +96,11 @@ function Main(){
         if(dataObject.status==="policier_car_ok"){
             Swal.close();
             policier_car_ok = true;
+        }
+
+        if(dataObject.status==="all_police_car_arrived"){
+            Swal.close();
+            all_police_car_arrived = true;
         }
     };
     ws.onopen = function() {
@@ -271,8 +276,19 @@ function vireraffi(id: string) {
     console.log(checkarrive);
     if (checkarrive >= nbTruck) {
         ws.send(JSON.stringify({
-            function: "voiturepoliarriver"
+            function: "all_fireman_truck_arrived"
         }));
+        if(!all_police_car_arrived){
+            Swal.fire({
+                title: 'En attente',
+                html: 'Attente de l\'arrivée de tous les véhicules des Policiers',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+            })
+        }
     }
 }
 
@@ -281,7 +297,7 @@ async function ShutdownServeur() {
     ws.send(JSON.stringify( {
         function: "shutdown"
     }));
-    Swal.fire('Le serveur a était fermer, la fenetre va être fermer dans 5 secondes');
+    Swal.fire('Le serveur a été fermé, la fenetre va se fermer dans 5 secondes');
     await sleep(5000);
     window.close();
 }

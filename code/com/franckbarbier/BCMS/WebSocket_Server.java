@@ -68,9 +68,9 @@ public class WebSocket_Server {
                     case "state_truck":
                         _bCMS.set_number_of_fire_truck_required(Integer.parseInt(objarr.getString("data")));
                         _bCMS.state_fire_truck_number(Integer.parseInt(objarr.getString("data")));
-                        javax.json.JsonObject pompier_truck_ok = javax.json.Json.createObjectBuilder().add("status", "pompier_truck_ok").build();
-                        for(javax.websocket.Session usr : sessions){
-                            if(usr.getId().equals(_sessions.get("Policier"))){
+                        javax.json.JsonObject pompier_truck_ok = javax.json.Json.createObjectBuilder().add("status", "fireman_truck_ok").build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
                                 usr.getBasicRemote().sendObject(pompier_truck_ok);
                             }
                         }
@@ -79,14 +79,14 @@ public class WebSocket_Server {
                         _bCMS.set_number_of_police_vehicle_required(Integer.parseInt(objarr.getString("data")));
                         _bCMS.state_police_vehicle_number(Integer.parseInt(objarr.getString("data")));
                         javax.json.JsonObject policier_car_ok = javax.json.Json.createObjectBuilder().add("status", "policier_car_ok").build();
-                        for(javax.websocket.Session usr : sessions){
-                            if(usr.getId().equals(_sessions.get("Pompier"))){
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Pompier"))) {
                                 usr.getBasicRemote().sendObject(policier_car_ok);
                             }
                         }
                         break;
                     case "routeChoisisPol":
-                        
+
                         break;
                     case "routePolicier":
                         System.out.println("Route Policier");
@@ -98,7 +98,7 @@ public class WebSocket_Server {
                             }
                         }
                         break;
-                     case "routePompier":
+                    case "routePompier":
                         System.out.println("Route Pompier");
                         _bCMS.route_for_fire_trucks();
                         javax.json.JsonObject routeP = javax.json.Json.createObjectBuilder().add("status", "valid_routeP").add("route", objarr.getString("data")).build();
@@ -107,7 +107,7 @@ public class WebSocket_Server {
                                 usr.getBasicRemote().sendObject(routeP);
                             }
                         }
-                        break;                   
+                        break;
                     case "disagree_route_policier":
                         _bCMS.FSC_disagrees_about_police_vehicle_route();
                         javax.json.JsonObject route_disagree = javax.json.Json.createObjectBuilder().add("status", "disagree_route").add("route", objarr.getString("data")).build();
@@ -166,11 +166,24 @@ public class WebSocket_Server {
                             }
                         }
                         break;
-                    case "voiturepoliarriver":
-                            // TODO
+                    case "all_police_car_arrived":
+                        javax.json.JsonObject all_police_car_arrived = javax.json.Json.createObjectBuilder().add("status", "all_police_car_arrived").build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Pompier"))) {
+                                usr.getBasicRemote().sendObject(all_police_car_arrived);
+                            }
+                        }
                         break;
-                    }
-                     
+                    case "all_fireman_truck_arrived":
+                        javax.json.JsonObject all_fireman_truck_arrived = javax.json.Json.createObjectBuilder().add("status", "all_fireman_truck_arrived").build();
+                        for (javax.websocket.Session usr : sessions) {
+                            if (usr.getId().equals(_sessions.get("Policier"))) {
+                                usr.getBasicRemote().sendObject(all_fireman_truck_arrived);
+                            }
+                        }
+                        break;
+                }
+
             }
             jsonReader.close();
             if (_sessions.size() == 2 && _bCMS == null) {

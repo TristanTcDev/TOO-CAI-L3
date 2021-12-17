@@ -10,7 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const ws = new WebSocket('ws://localhost:1963/BCMS_Server/BCMS'); //WebSocket coté client
 let leftdis = 10;
 let crisis_started = false;
-let pompier_truck_ok = false;
+let fireman_truck_ok = false;
+let all_fireman_truck_arrived = false;
 let checkpomp = false;
 let checkpol = false;
 let pc = "Route des Policiers";
@@ -148,9 +149,13 @@ function Main() {
                 function: "route_choisis",
             }));
         }
-        if (dataObject.status === "pompier_truck_ok") {
+        if (dataObject.status === "fireman_truck_ok") {
             Swal.close();
-            pompier_truck_ok = true;
+            fireman_truck_ok = true;
+        }
+        if (dataObject.status === "all_fireman_truck_arrived") {
+            Swal.close();
+            all_fireman_truck_arrived = true;
         }
     };
     ws.onopen = function () {
@@ -158,7 +163,7 @@ function Main() {
     };
     ws.onclose = function (e) {
         return __awaiter(this, void 0, void 0, function* () {
-            Swal.fire('Le serveur a était fermer, la fenetre va être fermer dans 5 secondes');
+            Swal.fire('Le serveur a été fermé, la fenetre va se fermer dans 5 secondes');
             yield sleep(5000);
             window.close();
             console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
@@ -224,7 +229,7 @@ function idlePolicier() {
         }));
         document.getElementById("routePoli").style.display = "block";
         document.getElementById("routePomp").style.display = "block";
-        if (!pompier_truck_ok) {
+        if (!fireman_truck_ok) {
             Swal.fire({
                 title: 'En attente',
                 html: 'Attente de l\'envoie des véhicule des Pompiers',
@@ -316,11 +321,23 @@ function dispaffi(id) {
 }
 function vireraffi(id) {
     toggle_button(id, "Vehicule arrivé");
+    console.log(id);
     checkarrive += 1;
     if (checkarrive >= nbCar) {
         ws.send(JSON.stringify({
-            function: "voiturepoliarriver"
+            function: "all_police_car_arrived"
         }));
+        if (!all_fireman_truck_arrived) {
+            Swal.fire({
+                title: 'En attente',
+                html: 'Attente de l\'arrivée de tous les véhicules des Pompiers',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+        }
     }
 }
 function routePolicier() {

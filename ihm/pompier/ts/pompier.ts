@@ -6,8 +6,6 @@ let nbTruck: number;
 let leftdis: number = 10;
 let checkarrive: number = 0;
 
-let checkdisp: boolean;
-
 declare const Swal:any;
 
 window.addEventListener('load', Main);
@@ -31,10 +29,17 @@ function Main(){
                 text: 'Un ' + dataObject.id + ' est deja connecté pour cette crise!',
             }).then((e) => {ws.close()}).then(() => {window.close();})
         }
+
+        /*
+        * Appeler lorsque la crise démarre
+         */
         if(dataObject.state==="crisis_started"){
             crisis_started = true;
             Swal.close();
         }
+        /*
+        * Appeler lorsque les policiers on proposer une route pour les pompiers, permet au pompier de valider ou non la route
+         */
         if (dataObject.status==="valid_routeP") {
             Swal.fire({
                 title: 'Les pompiers veulent prendre la route ' + dataObject.route,
@@ -62,6 +67,9 @@ function Main(){
             })
             return 0;
         }
+        /*
+        * Appeler lorsque les policiers on proposer une route pour eux même permet au pompier de valider ou non la route
+         */
         if (dataObject.status==="valid_route") {
             Swal.fire({
                 title: 'Les policiers veulent prendre la route ' + dataObject.route,
@@ -88,18 +96,25 @@ function Main(){
             })
             return 0;
         }
+        /*
+        * Permet l'appel de la fonction générant le nombre de bouton nécessaire
+         */
         if (dataObject.status === "route_policier_choisis") {
-            console.log("azasd");
             for (let i = 0; i <= nbTruck; i++) {
                 buttonNbPompier(i);
             }
         }
-
+        /*
+        *  Appeler lorsque les policiers on validé leur nombre de véhicule
+        *  */
         if(dataObject.status==="policier_car_ok"){
             Swal.close();
             policier_car_ok = true;
         }
 
+        /*
+        * Vérifie si tout les véhicule de police sont arrivé
+         */
         if(dataObject.status==="all_police_car_arrived"){
             Swal.close();
             all_police_car_arrived = true;
@@ -112,6 +127,12 @@ function Main(){
         console.log("Femeture du serveur Java WebSocket, code de fermeture: " + e.code); //On recupère le code d'extinction du serveur
     };
 }
+
+/*
+* Représenter par le bouton "Pompier" central
+* Ce bouton permet au policier, lorsqu'il est presser, de ce connecter au FSC
+* Si les policiers ne sont pas encore connecter ça les met en attente
+* */
 
 function btnPompier(){
     ws.send(JSON.stringify({
@@ -146,6 +167,11 @@ function btnPompier(){
     })
 }
 
+/*
+* Représenter par le bouton "Nombre de véhicule des pompiers"
+* Ce bouton permet de selectionner le nombre de véhicule à envoyer
+ */
+
 
 function idlePompier() {
     Swal.fire({
@@ -164,7 +190,6 @@ function idlePompier() {
     }).then((nbCamions) => {
         nbTruck = nbCamions.value - 1;
         toggle_button("idlePomp", nbCamions.value + "  véhicule disponible")
-        console.log(nbCamions.value);
         ws.send(JSON.stringify({
             function: "state_truck",
             data: nbCamions.value
@@ -205,6 +230,10 @@ function idlePompier() {
     })
 }
 
+/*
+* Cette fonction permet la création des différent button dispatched et arrivé
+ */
+
 function buttonNbPompier(e) {
         let x = document.createElement("button");
         x.id = ("button_dispatched" + e);
@@ -212,7 +241,6 @@ function buttonNbPompier(e) {
         document.body.appendChild(x);
         document.getElementById(x.id).onclick = function() {dispaffi(x.id)};
         let myButton = <HTMLInputElement>document.getElementById(x.id);
-        console.log(myButton.id);
         myButton.textContent = "Dispatcher #" + e;
         myButton.style.alignItems = "center";
         myButton.style.color = "white";
@@ -240,7 +268,6 @@ function buttonNbPompier(e) {
         document.body.appendChild(y);
         document.getElementById(y.id).onclick = function() {vireraffi(y.id)};
         let myButtonAri = <HTMLInputElement>document.getElementById(y.id);
-        console.log(myButtonAri);
         myButtonAri.style.display = "none";
         myButtonAri.textContent = "Arrivé #" + e;
         myButtonAri.style.alignItems = "center";
@@ -268,6 +295,11 @@ function buttonNbPompier(e) {
         document.getElementById("CriseBCMS").style.backgroundColor = "#FFFF00";
 }
 
+/*
+* Cette fonction est appeler lors de l'appuie sur les boutons "dispatcher  #"
+* Elle permet de changer l'affichage des boutons dispatcher
+*/
+
 function dispaffi(id: string) {
     let a = id.slice(-1);
     toggle_button(id, "Vehicule Dispatcher");
@@ -280,10 +312,14 @@ function dispaffi(id: string) {
     }));
 }
 
+/*
+* Cette fonction est appeler lors de l'appuie sur les boutons "arrivé  #"
+* Elle permet de changer l'affichage des boutons arrivé
+*/
+
 function vireraffi(id: string) {
     toggle_button(id, "Vehicule arrivé");
     checkarrive += 1;
-    console.log(checkarrive);
     ws.send(JSON.stringify({
         function: "arrived_truck_fireman",
         data: id.slice(-1),
@@ -315,8 +351,12 @@ function vireraffi(id: string) {
     }
 }
 
+/*
+* Cette fonction est appeler lors de l'appuie sur les "shutdown"
+* Elle permet au serveur de ce fermer lors de l'appuie sur le dit bouton
+*/
+
 async function ShutdownServeur() {
-    console.log("Shutdown marche");
     ws.send(JSON.stringify( {
         function: "shutdown"
     }));
@@ -325,9 +365,10 @@ async function ShutdownServeur() {
     window.close();
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+/*
+* Fonction qui permet le changement de couleur des différent bouton
+* En l'occurence elle permet de les griser et les rendre non cliquable
+ */
 
 function toggle_button ( id: string, texte: string) {
     let myButton = <HTMLInputElement>document.getElementById(id);
@@ -337,11 +378,24 @@ function toggle_button ( id: string, texte: string) {
     myButton.textContent = texte;
 }
 
+/*
+* Fonction qui permet le changement de couleur des différent bouton
+* En l'occurence elle permet de les rendre rouge et cliquable
+ */
+
 function toggle_buttonPom ( id: string, texte: string) {
     let myButton = <HTMLInputElement>document.getElementById(id);
     myButton.disabled = false;
     myButton.style.cursor = "pointer";
     myButton.style.background = "linear-gradient(90deg, rgba(36,0,0,1) 0%, rgba(200,6,6,1) 25%, rgba(200,6,6,1) 75%, rgba(36,0,0,1) 100%)";
     myButton.textContent = texte;
+}
+
+/*
+* Fonction permettant de faire une pause durant une durée souhaiter
+*/
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
